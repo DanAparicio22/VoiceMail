@@ -198,6 +198,14 @@ public class Connection
          phone.speak(MAILBOX_MENU_TEXT);
       }
    }
+   
+   public boolean isRecording() {
+	   return state == RECORDING;
+   }
+   
+   public boolean isConnected() {
+		return state == CONNECTED;
+	}
 
    private MailSystem system;
    private Mailbox currentMailbox;
@@ -225,6 +233,7 @@ public class Connection
          + "Enter 2 to save the current message\n"
          + "Enter 3 to delete the current message\n"
          + "Enter 4 to return to the main menu";
+
 }
 
 
