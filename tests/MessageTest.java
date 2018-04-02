@@ -1,14 +1,14 @@
-
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-
+import org.junit.Before;
 
 public class MessageTest {
-
+	
+	Message message;
+	
 	@Test
 	public void estoRetornaElMensaje() {
-		Message message = new Message("Hola como estas");
+		message = new Message("Hola como estas");
 		assertEquals("Hola como estas", message.getText());
 	}
 

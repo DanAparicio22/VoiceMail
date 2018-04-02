@@ -1,37 +1,41 @@
-
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-
+import org.junit.Before;
+import static org.mockito.Mockito.mock;
 
 public class MessageQueueTest {
+	
+	MessageQueue queue;
+	Message mockedMessage;
+	
+	@Before
+	public void init() {
+		queue = new MessageQueue();
+		mockedMessage = mock(Message.class);
+	}
 
 	@Test
 	public void messageQueueTamanyoCero() {
-		MessageQueue queue = new MessageQueue();
 		assertEquals(0, queue.size());
 	}
 	
 	@Test
 	public void messageQueueTamanyoUno() {
-		MessageQueue queue = new MessageQueue();
-		queue.add(new Message("hola"));
+		queue.add(mockedMessage);
 		assertEquals(1, queue.size());
 	}
 	
 	@Test
 	public void messageQueueTamanyoDos() {
-		MessageQueue queue = new MessageQueue();
-		queue.add(new Message("hola"));
-		queue.add(new Message("hola"));
+		queue.add(mockedMessage);
+		queue.add(mockedMessage);
 		assertEquals(2, queue.size());
 	}
 	
 	@Test
 	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoUno() {
-		MessageQueue queue = new MessageQueue();
-		queue.add(new Message("hola soy luis"));
-		queue.add(new Message("hay clases hoy?"));
+		queue.add(mockedMessage);
+		queue.add(mockedMessage);
 		assertEquals(2, queue.size());
 		queue.remove();
 		assertEquals(1,queue.size());
@@ -39,9 +43,8 @@ public class MessageQueueTest {
 	
 	@Test
 	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoCero() {
-		MessageQueue queue = new MessageQueue();
-		queue.add(new Message("hola soy luis"));
-		queue.add(new Message("hay clases hoy?"));
+		queue.add(mockedMessage);
+		queue.add(mockedMessage);
 		assertEquals(2, queue.size());
 		queue.remove();
 		queue.remove();
@@ -50,19 +53,15 @@ public class MessageQueueTest {
 	
 	@Test
 	public void RetornaElUltimoMensajeEliminado() {
-		MessageQueue queue = new MessageQueue();
-		Message message1= new Message("hola soy luis");
-		queue.add(message1);
-		Message message2 = new Message("hay class hoy?");
-		queue.add(message2);
-		assertEquals(message1, queue.peek());
+		queue.add(mockedMessage);
+		queue.add(mockedMessage);
+		assertEquals(mockedMessage, queue.peek());
 		queue.remove();
-		assertEquals(message2,queue.peek());
+		assertEquals(mockedMessage,queue.peek());
 	}
 	
 	@Test
 	public void metodoPeekRetornaNULL() {
-		MessageQueue queue = new MessageQueue();
 		assertNull(queue.peek());
 	}
 	
