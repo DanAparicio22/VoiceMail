@@ -12,7 +12,7 @@ public class MessageQueue
    */
    public MessageQueue()
    {
-      queue = new ArrayList<Message>();
+      messageQueue = new ArrayList<Message>();
    }
 
    /**
@@ -21,7 +21,7 @@ public class MessageQueue
    */
    public Message remove()
    {
-      return queue.remove(0);
+      return messageQueue.remove(0);
    }
 
    /**
@@ -30,16 +30,16 @@ public class MessageQueue
    */
    public void add(Message newMessage)
    {
-      queue.add(newMessage);
+      messageQueue.add(newMessage);
    }
 
    /**
       Get the total number of messages in the queue.
       @return the total number of messages in the queue
    */
-   public int size()
+   public int getMessageQueueSize()
    {
-      return queue.size();
+      return messageQueue.size();
    }
 
    /**
@@ -49,9 +49,13 @@ public class MessageQueue
    */
    public Message peek()
    {
-      if (queue.size() == 0) return null;
-      else return queue.get(0);
+      if (messageQueue.size() == 0) return null;
+      else return messageQueue.get(0);
+   }
+   
+   public boolean isMessageQueueGreaterThan(int size){
+	   return getMessageQueueSize() > size;
    }
 
-   private ArrayList<Message> queue;
+   private ArrayList<Message> messageQueue;
 }
