@@ -1,41 +1,40 @@
 import java.util.ArrayList;
-
-/**
-   A system of voice mail boxes.
-*/
+ 
 public class MailSystem
 {
-   /**
-      Constructs a mail system with a given number of mailboxes
-      @param mailboxCount the number of mailboxes
-   */
-   public MailSystem(int mailboxCount)
+    
+   private static final int REAL_VALUE_TO_MAILBOX = 1;
+   private static final int ONE_POSITION_MAILBOXES = 1;
+   private static final int INTITAL_MAILBOX_COUNT = 0;
+   private static final int MINIMUM_NUMBER_MAILBOX = 1;
+   private ArrayList<Mailbox> mailboxes;
+
+   public MailSystem(int numberOfMailBoxes)
    {
       mailboxes = new ArrayList<Mailbox>();
-
-      // Initialize mail boxes.
-
-      for (int i = 0; i < mailboxCount; i++)
+ 
+      for (int number = INTITAL_MAILBOX_COUNT; number < numberOfMailBoxes; number++)
       {
-         String passcode = "" + (i + 1);
-         String greeting = "You have reached mailbox " + (i + 1)
+    	 int newNumberMailBox = (number + REAL_VALUE_TO_MAILBOX);
+         String passcode = "" + newNumberMailBox;
+         String greeting = "You have reached mailbox " + newNumberMailBox
                + ". \nPlease leave a message now.";
          mailboxes.add(new Mailbox(passcode, greeting));
       }
    }
 
-   /**
-      Locate a mailbox.
-      @param ext the extension number
-      @return the mailbox or null if not found
-   */
-   public Mailbox findMailbox(String ext)
+    
+   public Mailbox findMailbox(String extensionNumberOfMailBox)
    {
-      int i = Integer.parseInt(ext);
-      if (1 <= i && i <= mailboxes.size())
-         return  mailboxes.get(i - 1);
-      else return null;
+      int numberOfMailBox = Integer.parseInt(extensionNumberOfMailBox);
+      if (isNumberOfMailBoxBetween(MINIMUM_NUMBER_MAILBOX,mailboxes.size(),numberOfMailBox))
+         return  mailboxes.get(numberOfMailBox - ONE_POSITION_MAILBOXES);
+      else 
+    	 return null;
    }
 
-   private ArrayList<Mailbox> mailboxes;
+	private boolean isNumberOfMailBoxBetween(int number, int sizeMailBoxes,int numberOfMailBox) {
+		return number <= numberOfMailBox && numberOfMailBox <= sizeMailBoxes;
+	} 
+
 }
