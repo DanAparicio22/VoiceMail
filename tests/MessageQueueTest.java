@@ -16,39 +16,39 @@ public class MessageQueueTest {
 
 	@Test
 	public void messageQueueTamanyoCero() {
-		assertEquals(0, queue.size());
+		assertEquals(0, queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void messageQueueTamanyoUno() {
 		queue.add(mockedMessage);
-		assertEquals(1, queue.size());
+		assertEquals(1, queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void messageQueueTamanyoDos() {
 		queue.add(mockedMessage);
 		queue.add(mockedMessage);
-		assertEquals(2, queue.size());
+		assertEquals(2, queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoUno() {
 		queue.add(mockedMessage);
 		queue.add(mockedMessage);
-		assertEquals(2, queue.size());
+		assertEquals(2, queue.getMessageQueueSize());
 		queue.remove();
-		assertEquals(1,queue.size());
+		assertEquals(1,queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoCero() {
 		queue.add(mockedMessage);
 		queue.add(mockedMessage);
-		assertEquals(2, queue.size());
+		assertEquals(2, queue.getMessageQueueSize());
 		queue.remove();
 		queue.remove();
-		assertEquals(0,queue.size());
+		assertEquals(0,queue.getMessageQueueSize());
 	}
 	
 	@Test
