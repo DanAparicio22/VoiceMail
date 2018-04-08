@@ -21,48 +21,48 @@ public class MessageQueueTest {
 	
 	@Test
 	public void messageQueueTamanyoUno() {
-		queue.add(mockedMessage);
+		queue.addMessage(mockedMessage);
 		assertEquals(1, queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void messageQueueTamanyoDos() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoUno() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
-		queue.remove();
+		queue.removeMessage();
 		assertEquals(1,queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoCero() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
-		queue.remove();
-		queue.remove();
+		queue.removeMessage();
+		queue.removeMessage();
 		assertEquals(0,queue.getMessageQueueSize());
 	}
 	
 	@Test
 	public void RetornaElUltimoMensajeEliminado() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
-		assertEquals(mockedMessage, queue.peek());
-		queue.remove();
-		assertEquals(mockedMessage,queue.peek());
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
+		assertEquals(mockedMessage, queue.peekMessageOfMessageQueue());
+		queue.removeMessage();
+		assertEquals(mockedMessage,queue.peekMessageOfMessageQueue());
 	}
 	
 	@Test
 	public void metodoPeekRetornaNULL() {
-		assertNull(queue.peek());
+		assertNull(queue.peekMessageOfMessageQueue());
 	}
 	
 }

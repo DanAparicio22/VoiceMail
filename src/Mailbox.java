@@ -25,15 +25,15 @@ public class Mailbox
 
    public void addMessage(Message aMessage)
    {
-      newMessages.add(aMessage);
+      newMessages.addMessage(aMessage);
    }
 
    public Message getCurrentMessage()
    {
       if (newMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return newMessages.peek();
+         return newMessages.peekMessageOfMessageQueue();
       else if (keptMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return keptMessages.peek();
+         return keptMessages.peekMessageOfMessageQueue();
       else
          return null;
    }
@@ -42,9 +42,9 @@ public class Mailbox
    public Message removeCurrentMessage()
    {
       if (newMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return newMessages.remove();
+         return newMessages.removeMessage();
       else if (keptMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return keptMessages.remove();
+         return keptMessages.removeMessage();
       else
          return null;
    }
@@ -53,7 +53,7 @@ public class Mailbox
    {
       Message message = removeCurrentMessage();
       if (isMessage(message))
-         keptMessages.add(message);
+         keptMessages.addMessage(message);
    }
 
 

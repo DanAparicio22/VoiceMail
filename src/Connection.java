@@ -178,7 +178,7 @@ public class Connection
          String output = "";
          Message m = currentMailbox.getCurrentMessage();
          if (m == null) output += "No messages." + "\n";
-         else output += m.getText() + "\n";
+         else output += m.getMessageText() + "\n";
          output += MESSAGE_MENU_TEXT;
          phone.speak(output);
       }

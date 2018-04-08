@@ -8,8 +8,8 @@ public class MessageTest {
 	
 	@Test
 	public void estoRetornaElMensaje() {
-		message = new Message("Hola como estas");
-		assertEquals("Hola como estas", message.getText());
+		message = new Message("Hola, como estas?");
+		assertEquals("Hola, como estas?", message.getMessageText());
 	}
 
 }
