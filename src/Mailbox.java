@@ -1,78 +1,83 @@
 
-public class Mailbox
-{
+public class Mailbox {
    
    private static final int INITIAL_MESSAGE_QUEUE_SIZE = 0;
    private MessageQueue newMessages;
    private MessageQueue keptMessages;
+   private Message currentMessage;
    private String greeting;
    private String passcode;
 
-   public Mailbox(String aPasscode, String aGreeting)
-   {
-      passcode = aPasscode;
-      greeting = aGreeting;
+   public Mailbox(String passcode, String greeting) {
+      this.passcode = passcode;
+      this.greeting = greeting;
       newMessages = new MessageQueue();
       keptMessages = new MessageQueue();
+      currentMessage = null;
    }
 
 
-   public boolean checkPasscode(String aPasscode)
-   {
-      return aPasscode.equals(passcode);
+   public boolean checkPasscodeOfMailBox(String introducedPasscode) {
+      return introducedPasscode.equals(passcode);
    }
 
 
-   public void addMessage(Message aMessage)
-   {
-      newMessages.addMessage(aMessage);
+   public void addMessageInMailBox(Message newMessage) {
+      newMessages.addMessage(newMessage);
    }
 
-   public Message getCurrentMessage()
-   {
-      if (newMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return newMessages.peekMessageOfMessageQueue();
-      else if (keptMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return keptMessages.peekMessageOfMessageQueue();
-      else
-         return null;
+   public Message getCurrentMessage() {
+      if (haveSomeMessage(newMessages)) {
+         currentMessage = newMessages.peekMessageOfMessageQueue();
+      } else {
+    	  if (haveSomeMessage(keptMessages)) {
+    		  currentMessage = keptMessages.peekMessageOfMessageQueue();
+    	  } else {
+    		  currentMessage = null;
+    	  }
+      }
+      return currentMessage;
    }
 
 
-   public Message removeCurrentMessage()
-   {
-      if (newMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return newMessages.removeMessage();
-      else if (keptMessages.isMessageQueueGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE))
-         return keptMessages.removeMessage();
-      else
-         return null;
+   public Message removeCurrentMessage() {
+      if (haveSomeMessage(newMessages)) {
+    	  currentMessage = newMessages.removeMessage();
+      } else {
+    	  if (haveSomeMessage(keptMessages)) {
+    		  currentMessage = keptMessages.removeMessage();
+    	  } else {
+    		  currentMessage = null;
+    	  }
+      }
+      return currentMessage;
    }
+	
+	private boolean haveSomeMessage(MessageQueue messageQueue) {
+		return messageQueue.isMessageQueueSizeGreaterThan(INITIAL_MESSAGE_QUEUE_SIZE);
+	}
 
-   public void saveCurrentMessage()
-   {
+   public void saveCurrentMessage() {
       Message message = removeCurrentMessage();
-      if (isMessage(message))
+      if (isValidMessage(message)) {
          keptMessages.addMessage(message);
+      }
    }
 
 
-	private boolean isMessage(Message message) {
+	private boolean isValidMessage(Message message) {
 		return message != null;
 	}
 
-   public void setGreeting(String newGreeting)
-   {
+   public void changeGreeting(String newGreeting) {
       greeting = newGreeting;
    }
 
-   public void setPasscode(String newPasscode)
-   {
+   public void changePasscode(String newPasscode) {
       passcode = newPasscode;
    }
 
-   public String getGreeting()
-   {
+   public String getGreeting() {
 	   return greeting;
    }
 

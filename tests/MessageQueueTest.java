@@ -15,25 +15,19 @@ public class MessageQueueTest {
 	}
 
 	@Test
-	public void messageQueueTamanyoCero() {
+	public void shouldReturnZeroOfMessageQueueSize() {
 		assertEquals(0, queue.getMessageQueueSize());
 	}
 	
 	@Test
-	public void messageQueueTamanyoUno() {
-		queue.addMessage(mockedMessage);
-		assertEquals(1, queue.getMessageQueueSize());
-	}
-	
-	@Test
-	public void messageQueueTamanyoDos() {
+	public void shouldReturnTwoOfMessageQueueSize() {
 		queue.addMessage(mockedMessage);
 		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
 	}
 	
 	@Test
-	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoUno() {
+	public void shouldDeleteOneMessageOfTwoMessagesInMessageQueue() {
 		queue.addMessage(mockedMessage);
 		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
@@ -42,17 +36,18 @@ public class MessageQueueTest {
 	}
 	
 	@Test
-	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoCero() {
+	public void shouldDeleteOnlyTwoMessagesInMessageQueue() {
 		queue.addMessage(mockedMessage);
 		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
+		queue.removeMessage();
 		queue.removeMessage();
 		queue.removeMessage();
 		assertEquals(0,queue.getMessageQueueSize());
 	}
 	
 	@Test
-	public void RetornaElUltimoMensajeEliminado() {
+	public void ShouldReturnTheLastMessage() {
 		queue.addMessage(mockedMessage);
 		queue.addMessage(mockedMessage);
 		assertEquals(mockedMessage, queue.peekMessageOfMessageQueue());
@@ -61,8 +56,20 @@ public class MessageQueueTest {
 	}
 	
 	@Test
-	public void metodoPeekRetornaNULL() {
+	public void shouldReturnNullIfMessageQueueDoesNotHaveAMessage() {
 		assertNull(queue.peekMessageOfMessageQueue());
 	}
 	
+	@Test
+	public void shouldReturnTrueIfMessageQueueIsGreaterThanZero() {
+		queue.addMessage(mockedMessage);
+		assertTrue(queue.isMessageQueueSizeGreaterThan(0));
+	}
+	
+	@Test
+	public void shouldReturnFalseIfMessageQueueIsNotGreaterThanZero() {
+		assertFalse(queue.isMessageQueueSizeGreaterThan(0));
+	}
+	
 }
+

@@ -53,7 +53,7 @@ public class Connection
    public void hangup()
    {
       if (state == RECORDING)
-         currentMailbox.addMessage(new Message(currentRecording));
+         currentMailbox.addMessageInMailBox(new Message(currentRecording));
       resetConnection();
    }
 
@@ -99,7 +99,7 @@ public class Connection
    {
       if (key.equals("#"))
       {
-         if (currentMailbox.checkPasscode(accumulatedKeys))
+         if (currentMailbox.checkPasscodeOfMailBox(accumulatedKeys))
          {
             state = MAILBOX_MENU;
             phone.speak(MAILBOX_MENU_TEXT);
@@ -120,7 +120,7 @@ public class Connection
    {
       if (key.equals("#"))
       {
-         currentMailbox.setPasscode(accumulatedKeys);
+         currentMailbox.changePasscode(accumulatedKeys);
          state = MAILBOX_MENU;
          phone.speak(MAILBOX_MENU_TEXT);
          accumulatedKeys = "";
@@ -137,7 +137,7 @@ public class Connection
    {
       if (key.equals("#"))
       {
-         currentMailbox.setGreeting(currentRecording);
+         currentMailbox.changeGreeting(currentRecording);
          currentRecording = "";
          state = MAILBOX_MENU;
          phone.speak(MAILBOX_MENU_TEXT);
@@ -214,7 +214,6 @@ public class Connection
    private Telephone phone;
    private int state;
 
-   private static final int DISCONNECTED = 0;
    private static final int CONNECTED = 1;
    private static final int RECORDING = 2;
    private static final int MAILBOX_MENU = 3;

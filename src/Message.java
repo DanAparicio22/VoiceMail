@@ -1,3 +1,4 @@
+
 public class Message {
    
    private String messageText;
@@ -9,4 +10,5 @@ public class Message {
    public String getMessageText() {
       return messageText;
    }
+   
 }

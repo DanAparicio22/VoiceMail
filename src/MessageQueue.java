@@ -9,7 +9,10 @@ public class MessageQueue {
    }
 
    public Message removeMessage() {
-      return messageQueue.remove(0);
+	  if (!messageQueue.isEmpty()) {
+		  return messageQueue.remove(0);
+	  }
+	  return null;
    }
 
    public void addMessage(Message newMessage) {
@@ -32,7 +35,7 @@ public class MessageQueue {
 		return messageQueue.size() == 0;
 	}
    
-   public boolean isMessageQueueGreaterThan(int size) {
+   public boolean isMessageQueueSizeGreaterThan(int size) {
 	   return getMessageQueueSize() > size;
    }
 
