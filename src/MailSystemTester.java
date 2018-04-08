@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -9,10 +10,19 @@ public class MailSystemTester
    public static void main(String[] args)
    {
       MailSystem system = new MailSystem(MAILBOX_COUNT);
-      Scanner console = new Scanner(System.in);
-      Telephone p = new Telephone(console);
-      Connection c = new Connection(system, p);
-      p.run(c);
+      
+      Scanner console = new Scanner(System.in);  
+    
+      Observer observerConsole = new Telephone(console);
+      Observer observerUI = new UITelephone();
+      
+      ArrayList<Observer> observers = new ArrayList<>();
+      observers.add(observerConsole);
+      observers.add(observerUI);
+      
+      Connection c = new Connection(system, observers);
+      for(Observer observer : observers)
+    	  observer.run(c);
    }
 
    private static final int MAILBOX_COUNT = 20;
