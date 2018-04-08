@@ -83,4 +83,14 @@ public class MailboxTest {
 		assertEquals(mockedMessage,mailBox.getCurrentMessage());
 	}
 	
+	@Test
+	public void shouldReturnTheFirstSavedMessageWhenDeleteTheSecondSavedMessage() {
+		mailBox.addMessageInMailBox(mockedMessage);
+		mailBox.saveCurrentMessage();
+		mailBox.addMessageInMailBox(mockedMessage);
+		mailBox.saveCurrentMessage();
+		mailBox.removeCurrentMessage();
+		assertEquals(mockedMessage,mailBox.getCurrentMessage());
+	}
+	
 }

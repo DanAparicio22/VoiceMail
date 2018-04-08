@@ -4,7 +4,6 @@ public class Mailbox {
    private static final int INITIAL_MESSAGE_QUEUE_SIZE = 0;
    private MessageQueue newMessages;
    private MessageQueue keptMessages;
-   private Message currentMessage;
    private String greeting;
    private String passcode;
 
@@ -13,7 +12,6 @@ public class Mailbox {
       this.greeting = greeting;
       newMessages = new MessageQueue();
       keptMessages = new MessageQueue();
-      currentMessage = null;
    }
 
 
@@ -27,13 +25,12 @@ public class Mailbox {
    }
 
    public Message getCurrentMessage() {
+	  Message currentMessage = null;
       if (haveSomeMessage(newMessages)) {
-         currentMessage = newMessages.peekMessageOfMessageQueue();
+         currentMessage = newMessages.peekLastMessage();
       } else {
     	  if (haveSomeMessage(keptMessages)) {
-    		  currentMessage = keptMessages.peekMessageOfMessageQueue();
-    	  } else {
-    		  currentMessage = null;
+    		  currentMessage = keptMessages.peekLastMessage();
     	  }
       }
       return currentMessage;
@@ -41,13 +38,12 @@ public class Mailbox {
 
 
    public Message removeCurrentMessage() {
+	  Message currentMessage = null;
       if (haveSomeMessage(newMessages)) {
     	  currentMessage = newMessages.removeMessage();
       } else {
     	  if (haveSomeMessage(keptMessages)) {
     		  currentMessage = keptMessages.removeMessage();
-    	  } else {
-    		  currentMessage = null;
     	  }
       }
       return currentMessage;

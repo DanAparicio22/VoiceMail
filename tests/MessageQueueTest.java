@@ -47,17 +47,16 @@ public class MessageQueueTest {
 	}
 	
 	@Test
-	public void ShouldReturnTheLastMessage() {
+	public void ShouldReturnTheDeleteMessage() {
 		queue.addMessage(mockedMessage);
 		queue.addMessage(mockedMessage);
-		assertEquals(mockedMessage, queue.peekMessageOfMessageQueue());
-		queue.removeMessage();
-		assertEquals(mockedMessage,queue.peekMessageOfMessageQueue());
+		assertEquals(mockedMessage, queue.peekLastMessage());
+		assertEquals(mockedMessage,queue.removeMessage());
 	}
 	
 	@Test
 	public void shouldReturnNullIfMessageQueueDoesNotHaveAMessage() {
-		assertNull(queue.peekMessageOfMessageQueue());
+		assertNull(queue.peekLastMessage());
 	}
 	
 	@Test

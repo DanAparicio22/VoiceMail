@@ -9,10 +9,11 @@ public class MessageQueue {
    }
 
    public Message removeMessage() {
+	  Message message = null;
 	  if (!messageQueue.isEmpty()) {
-		  return messageQueue.remove(0);
+		  message = messageQueue.remove(0);
 	  }
-	  return null;
+	  return message;
    }
 
    public void addMessage(Message newMessage) {
@@ -23,17 +24,17 @@ public class MessageQueue {
       return messageQueue.size();
    }
 
-   public Message peekMessageOfMessageQueue() {
-      if (isMessageQueueEmpty()) {
-    	  return null;  
-      } else {
-    	  return messageQueue.get(0);
+   public Message peekLastMessage() {
+	  Message message = null;
+      if (!isMessageQueueEmpty()) {
+    	  message = messageQueue.get(0);
       }
+      return message;
    }
 
-	private boolean isMessageQueueEmpty() {
-		return messageQueue.size() == 0;
-	}
+   private boolean isMessageQueueEmpty() {
+	   return messageQueue.size() == 0;
+   }
    
    public boolean isMessageQueueSizeGreaterThan(int size) {
 	   return getMessageQueueSize() > size;
