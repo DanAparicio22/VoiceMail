@@ -29,6 +29,11 @@ public class Connection {
 	private String accumulatedKeys;
 	private int state;
 	private ArrayList<CommunicationDevice> observers= new ArrayList<>();
+	
+	 public Connection(MailSystem s) {
+	      this.system = s;  
+	      resetConnection();   
+	   } 
 
    public Connection(MailSystem mailSystem, CommunicationDevice observer) {
       this.system = mailSystem;
