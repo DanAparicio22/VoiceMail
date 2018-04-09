@@ -16,66 +16,81 @@ public class MailboxTest {
 	}
     
 	@Test
-	public void deberiaVerificarElPassCodeComoCorrecto() {
-		assertTrue(mailBox.checkPasscode("1"));
+	public void shouldVerifyThePasswordAsCorrect() {
+		assertTrue(mailBox.checkPasscodeOfMailBox("1"));
 	}
 	
 	@Test
-	public void deberiaVerificarElPassCodeComoIncorrecto() {
-		assertFalse(mailBox.checkPasscode("2"));
+	public void shouldVerifyThePasswordAsIncorrect() {
+		assertFalse(mailBox.checkPasscodeOfMailBox("2"));
 	}
 	
 	@Test
-	public void deberiaCambiarPassCodeAsignadoAlPrincipio(){
-		mailBox.setPasscode("11\n#");
-		assertFalse(mailBox.checkPasscode("11"));
+	public void shouldChangeOldPasscode(){
+		mailBox.changePasscode("11\n#");
+		assertFalse(mailBox.checkPasscodeOfMailBox("11"));
 	}
 	 
 	
 	@Test
-	public void deberiaMostrarGreetingAsignadoAlPrincipio() {
+	public void shouldShowGreeting() {
 		assertEquals("You have reached mailbox 1. \nPlease leave a message now.",mailBox.getGreeting());
 	}
 	
 	@Test
-	public void deberiaCambiarElGreetingAsignadoAlPrincipio() {
-		mailBox.setGreeting("No me encuentro por ahora, \ndeja tu mensaje.");
+	public void shouldChangeOldGreeting() {
+		mailBox.changeGreeting("No me encuentro por ahora, \ndeja tu mensaje.");
 		assertEquals("No me encuentro por ahora, \ndeja tu mensaje.",mailBox.getGreeting());
 	}
 	
 	@Test
-	public void deberiaNoDevolverNingunMensajeAñadido(){
+	public void shouldNotReturnAMessage() {
 		assertEquals(null,mailBox.getCurrentMessage());
 	}
 	
 	@Test
-	public void deberiaDevolverUnNuevoMensajeAñadido(){
-		mailBox.addMessage(mockedMessage);
+	public void shouldReturnANewMessage() {
+		mailBox.addMessageInMailBox(mockedMessage);
 		assertEquals(mockedMessage,mailBox.getCurrentMessage());
 	}
 
 	@Test
-	public void deberiaBorrarElMensajeCorriente(){
-		mailBox.addMessage(mockedMessage);
+	public void shouldDeleteTheCurrentMessage(){
+		mailBox.addMessageInMailBox(mockedMessage);
 		mailBox.removeCurrentMessage();
-		assertEquals(null,mailBox.getCurrentMessage());
+		assertNull(mailBox.getCurrentMessage());
 	}
 	
 	@Test
-	public void deberiaDevolverElMensajeCorrienteQueSeGuardo(){
-		mailBox.addMessage(mockedMessage);
+	public void shouldReturnTheCurrentMessageThatWasSaved() {
+		mailBox.addMessageInMailBox(mockedMessage);
 		mailBox.saveCurrentMessage();
 		assertEquals(mockedMessage,mailBox.getCurrentMessage());
 	}
 	
 	@Test
-	public void deberiaDevolverElAnteriorMensajeGuardadoAlBorrarElNuevo(){
-		mailBox.addMessage(mockedMessage);
+	public void shouldReturnNullWhenSaveAInvalidMessage() {
 		mailBox.saveCurrentMessage();
-		mailBox.addMessage(mockedMessage);
+		assertNull(mailBox.getCurrentMessage());
+	}
+	
+	@Test
+	public void shouldReturnTheLastSavedMessageWhenDeleteTheNewMessage() {
+		mailBox.addMessageInMailBox(mockedMessage);
+		mailBox.saveCurrentMessage();
+		mailBox.addMessageInMailBox(mockedMessage);
 		mailBox.removeCurrentMessage();
 		assertEquals(mockedMessage,mailBox.getCurrentMessage());
 	}
-	 
+	
+	@Test
+	public void shouldReturnTheFirstSavedMessageWhenDeleteTheSecondSavedMessage() {
+		mailBox.addMessageInMailBox(mockedMessage);
+		mailBox.saveCurrentMessage();
+		mailBox.addMessageInMailBox(mockedMessage);
+		mailBox.saveCurrentMessage();
+		mailBox.removeCurrentMessage();
+		assertEquals(mockedMessage,mailBox.getCurrentMessage());
+	}
 	
 }

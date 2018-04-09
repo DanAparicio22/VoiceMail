@@ -15,54 +15,60 @@ public class MessageQueueTest {
 	}
 
 	@Test
-	public void messageQueueTamanyoCero() {
+	public void shouldReturnZeroOfMessageQueueSize() {
 		assertEquals(0, queue.getMessageQueueSize());
 	}
 	
 	@Test
-	public void messageQueueTamanyoUno() {
-		queue.add(mockedMessage);
-		assertEquals(1, queue.getMessageQueueSize());
-	}
-	
-	@Test
-	public void messageQueueTamanyoDos() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
+	public void shouldReturnTwoOfMessageQueueSize() {
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
 	}
 	
 	@Test
-	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoUno() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
+	public void shouldDeleteOneMessageOfTwoMessagesInMessageQueue() {
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
-		queue.remove();
+		queue.removeMessage();
 		assertEquals(1,queue.getMessageQueueSize());
 	}
 	
 	@Test
-	public void Eliminar1MensajeDe2MesajesDeQueueMessagesQuedaTamanyoCero() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
+	public void shouldDeleteOnlyTwoMessagesInMessageQueue() {
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
 		assertEquals(2, queue.getMessageQueueSize());
-		queue.remove();
-		queue.remove();
+		queue.removeMessage();
+		queue.removeMessage();
+		queue.removeMessage();
 		assertEquals(0,queue.getMessageQueueSize());
 	}
 	
 	@Test
-	public void RetornaElUltimoMensajeEliminado() {
-		queue.add(mockedMessage);
-		queue.add(mockedMessage);
-		assertEquals(mockedMessage, queue.peek());
-		queue.remove();
-		assertEquals(mockedMessage,queue.peek());
+	public void ShouldReturnTheDeleteMessage() {
+		queue.addMessage(mockedMessage);
+		queue.addMessage(mockedMessage);
+		assertEquals(mockedMessage, queue.peekLastMessage());
+		assertEquals(mockedMessage,queue.removeMessage());
 	}
 	
 	@Test
-	public void metodoPeekRetornaNULL() {
-		assertNull(queue.peek());
+	public void shouldReturnNullIfMessageQueueDoesNotHaveAMessage() {
+		assertNull(queue.peekLastMessage());
+	}
+	
+	@Test
+	public void shouldReturnTrueIfMessageQueueIsGreaterThanZero() {
+		queue.addMessage(mockedMessage);
+		assertTrue(queue.isMessageQueueSizeGreaterThan(0));
+	}
+	
+	@Test
+	public void shouldReturnFalseIfMessageQueueIsNotGreaterThanZero() {
+		assertFalse(queue.isMessageQueueSizeGreaterThan(0));
 	}
 	
 }
+
