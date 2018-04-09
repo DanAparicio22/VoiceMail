@@ -27,7 +27,7 @@ public class ConnectionTest {
       connection.dial(idMailBox);
       connection.dial("#");
       assertTrue(connection.isRecording());
-      verify(mockedTelephone).speak(selectedMailBox.getGreeting());
+      verify(mockedTelephone).updateDevice(selectedMailBox.getGreeting());
     }
 	
 	@Test
@@ -50,7 +50,7 @@ public class ConnectionTest {
       connection.dial(idMailBox);
       connection.dial("#");
       assertTrue(connection.isInMailboxMenu());
-      verify(mockedTelephone).speak("Enter 1 to listen to your messages\nEnter 2 to change your passcode\nEnter 3 to change your greeting");
+      verify(mockedTelephone).updateDevice("Enter 1 to listen to your messages\nEnter 2 to change your passcode\nEnter 3 to change your greeting");
     }
 	
 	@Test
@@ -63,7 +63,7 @@ public class ConnectionTest {
       connection.dial("2");
       connection.dial("#");
       assertFalse(connection.isInMailboxMenu());
-      verify(mockedTelephone).speak("Incorrect passcode. Try again!");
+      verify(mockedTelephone).updateDevice("Incorrect passcode. Try again!");
     }
 	
 	@Test
@@ -164,13 +164,13 @@ public class ConnectionTest {
       connection.dial("1");
       assertTrue(connection.isInMessageMenu());
       connection.dial("1");
-      verify(mockedTelephone).speak(connection.getStringOfNoMessages() + "Enter 1 to listen to the current message\nEnter 2 to save the current message\n"
+      verify(mockedTelephone).updateDevice(connection.getStringOfNoMessages() + "Enter 1 to listen to the current message\nEnter 2 to save the current message\n"
     	         + "Enter 3 to delete the current message\nEnter 4 to return to the main menu");
     }
 	
 	@Test
     public void shouldShowInitialMessage() {
-      verify(mockedTelephone).speak("Enter mailbox number followed by #");
+      verify(mockedTelephone).updateDevice("Enter mailbox number followed by #");
     }
 	
 	@Test

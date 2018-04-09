@@ -20,7 +20,7 @@ public class TelephoneTest {
 		String data = "H" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new Telephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).hangUp();
 	}
 	
@@ -29,7 +29,7 @@ public class TelephoneTest {
 		String data = System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new Telephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 	}
 	
 	@Test
@@ -37,7 +37,7 @@ public class TelephoneTest {
 		String data = "1" +  System.getProperty("line.separator") + "#" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new Telephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).dial("1");
 	}
 	
@@ -46,7 +46,7 @@ public class TelephoneTest {
 		String data = "a" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new Telephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).recordMessage("a");
 	}
 	
@@ -55,7 +55,7 @@ public class TelephoneTest {
 		String data = "ab" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new Telephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).recordMessage("ab");
 	}
 

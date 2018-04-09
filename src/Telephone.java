@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
-public class Telephone
-{
+public class Telephone implements CommunicationDevice {
 
    private static final int ZERO_COINCIDENCES = 0;
    private static final int ONE_VALUE = 1;
@@ -16,7 +15,8 @@ public class Telephone
       System.out.println(output);
    }
 
-   public void run(Connection connection) {
+   @Override
+   public void runConnection(Connection connection) {
       boolean activeConnection = true;
       while (activeConnection) {
          String input = scanner.nextLine();
@@ -37,6 +37,11 @@ public class Telephone
         	 }
          }
       }
+   }
+   
+   @Override
+   public void updateDevice(String message) {
+	   speak(message);
    }
 
 	private boolean isDial(String input) {
