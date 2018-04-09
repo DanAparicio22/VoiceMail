@@ -46,12 +46,12 @@ public class UITelephone extends JFrame implements Observer{
 	/**
 	 * Create the frame.
 	 */
-	public UITelephone() {
-		initialize();
+	public UITelephone(Connection c) {
+		initialize(c);
 		this.setVisible(true);
 	}
  
-	private void initialize() {
+	private void initialize(Connection c) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 478, 449);
 		contentPane = new JPanel();
@@ -111,7 +111,7 @@ public class UITelephone extends JFrame implements Observer{
 		inputH.setBounds(302, 228, 118, 50);
 		contentPane.add(inputH);
 		
-		inputHashtag = new JButton("Llamar #");
+		inputHashtag = new JButton("Confirmar #");
 		inputHashtag.setActionCommand("#");
 		 
 		inputHashtag.setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -138,58 +138,58 @@ public class UITelephone extends JFrame implements Observer{
 		 
 		input1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("1");
+				processInput(c,"1");
 			}
 		});  
 		input2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("2");
+				processInput(c,"2");
 			}
 		});  
 		input3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("3");
+				processInput(c,"3");
 			}
 		});  
 		input4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("4");
+				processInput(c,"4");
 			}
 		});  
 		input5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("5");
+				processInput(c,"5");
 			}
 		});  
 		input6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("6");
+				processInput(c,"6");
 			}
 		});  
 		input7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("7");
+				processInput(c,"7");
 			}
 		});  
 		input8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("8");
+				processInput(c,"8");
 			}
 		});  
 		input9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("9");
+				processInput(c,"9");
 				
 			}
 		});  
 		inputH.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("h");
+				processInput(c,"h");
 			}
 		}); 
 		inputHashtag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput("#");
+				processInput(c,"#");
 			}
 		}); 
 		 
@@ -197,55 +197,30 @@ public class UITelephone extends JFrame implements Observer{
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);  
 		    	dispose();
+		    	System.exit(0);
 			}
 		});   
 	} 
 	
 	@Override
-	public void Update(String message) { 
-		this.message.setText(message); 
+	public void update(String message) { 
+		this.message.setText(message+'\n'); 
 	}
 	
-	public void processInput(String input){  
+	public void processInput(Connection c,String input){  
 		 
-		//JOptionPane.showMessageDialog(null, "I am happy."); 
-		boolean more = true;
-	      while (more)
-	      { 
-	         if (input == null) return;
+		//JOptionPane.showMessageDialog(null, "I am happy.");
+		this.message.setText(this.message.getText()+input); 
 	         if (input.equalsIgnoreCase("H"))
-	            this.connection.hangup();
-	         else if (input.equalsIgnoreCase("Q")){
-	            more = false; 
+	             c.hangup();
+	         else if (input.equalsIgnoreCase("Q")){ 
 			     this.setVisible(false);  
 			     this.dispose();
 	         }else if (input.length() == 1
 	            && "1234567890#".indexOf(input) >= 0)
-	        	 this.connection.dial(input);
+	        	 c.dial(input);
 	         else
-	        	 this.connection.record(input);
-	      } 
-	} 
-	
-	@Override
-	public void run(Connection c) {
-		this.connection=c;
-		/*boolean more = true;
-	      while (more)
-	      {
-	         String input = this.input;
-	         if (input == null) return;
-	         if (input.equalsIgnoreCase("H"))
-	            c.hangup();
-	         else if (input.equalsIgnoreCase("Q")){
-	            more = false; 
-			     this.setVisible(false);  
-			     this.dispose();
-	         }else if (input.length() == 1
-	            && "1234567890#".indexOf(input) >= 0)
-	            c.dial(input);
-	         else
-	            c.record(input);
-	      }*/ 
+	        	 c.record(input);
+	        
 	} 
 }

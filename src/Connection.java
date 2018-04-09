@@ -12,27 +12,30 @@ public class Connection
       @param s a MailSystem object
       @param observer a Telephone object
    */
-   public Connection(MailSystem s, Observer observer)
-   {
-      this.system = s;
-      this.observers.add(observer);
-      resetConnection();   
-   }
-   
-   public Connection(MailSystem s, ArrayList<Observer> observers)
-   {
-      this.system = s;
-      this.observers = observers;
+   public Connection(MailSystem s) {
+      this.system = s;  
       resetConnection();   
    } 
+   
+   public void attach(Observer o){
+	   this.observers.add(o); 
+	   updateNewObserver();
+   }
+   
+   public void detach(Observer o){
+	   this.observers.remove(o);
+   }
+   
+   public void updateNewObserver(){
+	    this.observers.get(this.observers.size()-1).update(INITIAL_PROMPT);
+   }
 
    /**
       Respond to the user's pressing a key on the phone touchpad
       @param key the phone key pressed by the user
    */
    public void dial(String key)
-   {
-	   
+   { 
       if (isConnected())
          connect(key); 
       else if (isRecording()) 
@@ -45,7 +48,7 @@ public class Connection
          mailboxMenu(key);
       else if (isEnteringOptionOfMessageMenu())
          messageMenu(key); 
-      
+       
    }
 
    /**
@@ -78,7 +81,7 @@ public class Connection
       currentRecording = "";
       accumulatedKeys = "";
       state = CONNECTED; 
-      Notify(INITIAL_PROMPT);
+      notify(INITIAL_PROMPT);
    }
 
    /**
@@ -93,18 +96,15 @@ public class Connection
          if (currentMailbox != null)
          {
             state = RECORDING; 
-            Notify(currentMailbox.getGreeting());
+            notify(currentMailbox.getGreeting());
          }
          else 
-        	 Notify("Incorrect mailbox number. Try again!");
-         accumulatedKeys = "";
-         
-         
+        	 notify("Incorrect mailbox number. Try again!");
+         accumulatedKeys = ""; 
       }
       else
          accumulatedKeys += key;
-      
-      
+       
    }
 
    /**
@@ -118,10 +118,10 @@ public class Connection
          if (currentMailbox.checkPasscode(accumulatedKeys))
          {
             state = MAILBOX_MENU; 
-            Notify(MAILBOX_MENU_TEXT);
+            notify(MAILBOX_MENU_TEXT);
          }
          else 
-        	 Notify("Incorrect passcode. Try again!");
+        	 notify("Incorrect passcode. Try again!");
          accumulatedKeys = "";
       }
       else
@@ -140,7 +140,7 @@ public class Connection
       {
          currentMailbox.setPasscode(accumulatedKeys);
          state = MAILBOX_MENU; 
-         Notify(MAILBOX_MENU_TEXT);
+         notify(MAILBOX_MENU_TEXT);
          accumulatedKeys = "";
       }
       else
@@ -160,7 +160,7 @@ public class Connection
          currentMailbox.setGreeting(currentRecording);
          currentRecording = "";
          state = MAILBOX_MENU; 
-     	Notify(MAILBOX_MENU_TEXT);
+     	notify(MAILBOX_MENU_TEXT);
       }
         
    }
@@ -174,17 +174,17 @@ public class Connection
       if (key.equals("1"))
       {
          state = MESSAGE_MENU; 
-         Notify(MESSAGE_MENU_TEXT);
+         notify(MESSAGE_MENU_TEXT);
       }
       else if (key.equals("2"))
       {
          state = CHANGE_PASSCODE; 
-         Notify("Enter new passcode followed by the # key");
+         notify("Enter new passcode followed by the # key");
       }
       else if (key.equals("3"))
       {
          state = CHANGE_GREETING; 
-         Notify("Record your greeting, then press the # key");
+         notify("Record your greeting, then press the # key");
       } 
    }
 
@@ -201,22 +201,22 @@ public class Connection
          if (m == null) output += "No messages." + "\n";
          else output += m.getText() + "\n";
          output += MESSAGE_MENU_TEXT; 
-         Notify(output);
+         notify(output);
       }
       else if (key.equals("2"))
       {
          currentMailbox.saveCurrentMessage(); 
-         Notify(MESSAGE_MENU_TEXT);
+         notify(MESSAGE_MENU_TEXT);
       }
       else if (key.equals("3"))
       {
          currentMailbox.removeCurrentMessage(); 
-         Notify(MESSAGE_MENU_TEXT);
+         notify(MESSAGE_MENU_TEXT);
       }
       else if (key.equals("4"))
       {
          state = MAILBOX_MENU; 
-         Notify(MAILBOX_MENU_TEXT);
+         notify(MAILBOX_MENU_TEXT);
       }
      
    }
@@ -249,9 +249,9 @@ public class Connection
 	   return state == MESSAGE_MENU;
    }
    
-   public void Notify(String message){
+   public void notify(String message){
 	   for(Observer observer : observers){
-		   observer.Update(message);
+		   observer.update(message);
 	   }
    }
     

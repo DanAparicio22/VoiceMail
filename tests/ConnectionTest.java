@@ -15,7 +15,8 @@ public class ConnectionTest {
 		mockedMailSystem = mock(MailSystem.class);
 		mockedTelephone = mock(Telephone.class);
 		mockedCurrentMailbox = mock(Mailbox.class);
-		connection = new Connection(mockedMailSystem,mockedTelephone);
+		connection = new Connection(mockedMailSystem);
+		connection.attach(mockedTelephone);
 	}
 	
 	@Test

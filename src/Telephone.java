@@ -19,7 +19,7 @@ public class Telephone implements Observer
       System.out.println(output);
    } 
    
-   
+ 
    public void run(Connection c)
    {
       boolean more = true;
@@ -40,8 +40,9 @@ public class Telephone implements Observer
    }
 
    private Scanner scanner; 
+   
 	@Override
-	public void Update(String message) {
+	public void update(String message) {
 		speak(message);
 	}
 }

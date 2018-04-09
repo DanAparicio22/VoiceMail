@@ -12,17 +12,17 @@ public class MailSystemTester
       MailSystem system = new MailSystem(MAILBOX_COUNT);
       
       Scanner console = new Scanner(System.in);  
-    
+
+      Connection c = new Connection(system);
+      
       Observer observerConsole = new Telephone(console);
-      Observer observerUI = new UITelephone();
-      
-      ArrayList<Observer> observers = new ArrayList<>();
-      observers.add(observerConsole);
-      observers.add(observerUI);
-      
-      Connection c = new Connection(system, observers);
-      for(Observer observer : observers)
-    	  observer.run(c);
+      Observer observerUI = new UITelephone(c);
+     
+      c.attach(observerConsole);
+      c.attach(observerUI);
+       
+      ((Telephone) observerConsole).run(c);
+       
    }
 
    private static final int MAILBOX_COUNT = 20;
