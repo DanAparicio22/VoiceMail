@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Connection {
 	
+	private static final String EMPTY_KEYS = "";
 	private static final String RECORD_YOUR_GREETING_MESSAGE = "Record your greeting, then press the # key";
 	private static final String ENTER_NEW_PASSCODE_MESSAGE = "Enter new passcode followed by the # key";
 	private static final String INCORRECT_PASSCODE_MESSAGE = "Incorrect passcode. Try again!";
@@ -28,14 +29,14 @@ public class Connection {
 	private String currentRecording;
 	private String accumulatedKeys; 
 	private int state;
-	private ArrayList<Observer> observers= new ArrayList<>();
+	private ArrayList<Telephone> observers= new ArrayList<>();
 	
    public Connection(MailSystem s) {
       this.system = s;  
       resetConnection();   
    } 
    
-   public void attach(Observer o){
+   public void attach(Telephone o){
 	   this.observers.add(o); 
 	   updateNewObserver();
    } 
@@ -45,7 +46,7 @@ public class Connection {
    }
    
    public void notify(String message){
-	   for(Observer observer : observers){
+	   for(Telephone observer : observers){
 		   observer.update(message);
 	   }
    }
@@ -87,8 +88,8 @@ public class Connection {
    }
  
    private void resetConnection() {
-      currentRecording = "";
-      accumulatedKeys = "";
+      currentRecording = EMPTY_KEYS;
+      accumulatedKeys = EMPTY_KEYS;
       state = CONNECTED; 
       notify(INITIAL_PROMPT);
    }
@@ -103,7 +104,7 @@ public class Connection {
          else {
         	 notify(INCORRECT_MAILBOX_NUMBER_MESSAGE);
          } 
-         accumulatedKeys = ""; 
+         accumulatedKeys = EMPTY_KEYS; 
       }else {   
     	  accumulatedKeys += key;  
       }
@@ -118,7 +119,7 @@ public class Connection {
          else {
         	 notify(INCORRECT_PASSCODE_MESSAGE);
          }
-         accumulatedKeys = "";
+         accumulatedKeys = EMPTY_KEYS;
       }
       else {
          accumulatedKeys += key; 
@@ -130,7 +131,7 @@ public class Connection {
          currentMailbox.changePasscode(accumulatedKeys);
          state = MAILBOX_MENU; 
          notify(MAILBOX_MENU_TEXT);
-         accumulatedKeys = "";
+         accumulatedKeys = EMPTY_KEYS;
       }
       else {
          accumulatedKeys += key; 
@@ -140,7 +141,7 @@ public class Connection {
    private void changeGreeting(String key) {
       if (key.equals(HASH_VALUE_STRING)) {
          currentMailbox.changeGreeting(currentRecording);
-         currentRecording = "";
+         currentRecording = EMPTY_KEYS;
          state = MAILBOX_MENU; 
      	notify(MAILBOX_MENU_TEXT);
       }
@@ -160,16 +161,12 @@ public class Connection {
 		  case OPTION_THREE:
 			  state = CHANGE_GREETING;
 			  notify(RECORD_YOUR_GREETING_MESSAGE);
-			  break;
-		  /*default:
-			  state = MAILBOX_MENU;
-			  notify(MAILBOX_MENU_TEXT);
-			  break;*/
+			  break; 
 	  }  
    }
 
    private void getMessageMenu(String key) {
-	  String output = "";
+	  String output = EMPTY_KEYS;
 	  switch(key) {
 		  case OPTION_ONE:  
 			  Message message = getCurrentMessageOfCurrentMailBox(); 
