@@ -8,7 +8,7 @@ import org.junit.Test;
 public class TelephoneTest {
 	
 	Connection mockedConnection;
-	Telephone telephone;
+	ConsoleTelephone telephone;
 	
 	@Before
 	public void init() {
@@ -19,7 +19,7 @@ public class TelephoneTest {
 	public void shouldVerifyIfIsHangUp() {
 		String data = "H" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
-		telephone = new Telephone(new Scanner(System.in));
+		telephone = new ConsoleTelephone(new Scanner(System.in));
 		telephone.run(mockedConnection);
 		verify(mockedConnection).hangUp();
 	}
@@ -28,7 +28,7 @@ public class TelephoneTest {
 	public void shouldVerifyIfInputIsNull() {
 		String data = System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
-		telephone = new Telephone(new Scanner(System.in));
+		telephone = new ConsoleTelephone(new Scanner(System.in));
 		telephone.run(mockedConnection);
 	}
 	
@@ -36,7 +36,7 @@ public class TelephoneTest {
 	public void shouldVerifyIfIsDial() {
 		String data = "1" +  System.getProperty("line.separator") + "#" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
-		telephone = new Telephone(new Scanner(System.in));
+		telephone = new ConsoleTelephone(new Scanner(System.in));
 		telephone.run(mockedConnection);
 		verify(mockedConnection).dial("1");
 	}
@@ -45,7 +45,7 @@ public class TelephoneTest {
 	public void shouldVerifyIfIsRecordOneCharacter() {
 		String data = "a" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
-		telephone = new Telephone(new Scanner(System.in));
+		telephone = new ConsoleTelephone(new Scanner(System.in));
 		telephone.run(mockedConnection);
 		verify(mockedConnection).recordMessage("a");
 	}
@@ -54,7 +54,7 @@ public class TelephoneTest {
 	public void shouldVerifyIfIsRecordAWord() {
 		String data = "ab" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
-		telephone = new Telephone(new Scanner(System.in));
+		telephone = new ConsoleTelephone(new Scanner(System.in));
 		telephone.run(mockedConnection);
 		verify(mockedConnection).recordMessage("ab");
 	}

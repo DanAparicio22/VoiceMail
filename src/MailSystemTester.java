@@ -9,15 +9,15 @@ public class MailSystemTester {
       
       Scanner console = new Scanner(System.in);  
 
-      Connection c = new Connection(system);
+      Connection connection = new Connection(system);
       
-      Observer observerConsole = new Telephone(console);
-      Observer observerUI = new UITelephone(c);
+      Telephone observerConsole = new ConsoleTelephone(console);
+      Telephone observerUI = new UserInterfaceTelephone(connection);
      
-      c.attach(observerConsole);
-      c.attach(observerUI);
+      connection.attach(observerConsole);
+      connection.attach(observerUI);
        
-      ((Telephone) observerConsole).run(c);
+      ((ConsoleTelephone) observerConsole).run(connection);
        
    }
 
