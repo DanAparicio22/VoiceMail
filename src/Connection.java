@@ -1,3 +1,4 @@
+import java.util.ArrayList; 
 
 public class Connection {
 	
@@ -25,17 +26,31 @@ public class Connection {
 	private MailSystem system;
 	private Mailbox currentMailbox;
 	private String currentRecording;
-	private String accumulatedKeys;
-	private Telephone phone;
+	private String accumulatedKeys; 
 	private int state;
-
-   public Connection(MailSystem mailSystem, Telephone telephone) {
-      system = mailSystem;
-      phone = telephone;
-      resetConnection();
+	private ArrayList<Observer> observers= new ArrayList<>();
+	
+   public Connection(MailSystem s) {
+      this.system = s;  
+      resetConnection();   
+   } 
+   
+   public void attach(Observer o){
+	   this.observers.add(o); 
+	   updateNewObserver();
+   } 
+   
+   public void updateNewObserver(){
+	    this.observers.get(this.observers.size()-1).update(INITIAL_PROMPT);
+   }
+   
+   public void notify(String message){
+	   for(Observer observer : observers){
+		   observer.update(message);
+	   }
    }
 
-   public void dial(String key) {
+   public void dial(String key) { 
 	  switch(state) {
 		  case CONNECTED: 
 			  connect(key);
@@ -70,55 +85,55 @@ public class Connection {
       }
       resetConnection();
    }
-
+ 
    private void resetConnection() {
       currentRecording = "";
       accumulatedKeys = "";
-      state = CONNECTED;
-      phone.speak(INITIAL_PROMPT);
+      state = CONNECTED; 
+      notify(INITIAL_PROMPT);
    }
 
    private void connect(String key) {
-      if (key.equals(HASH_VALUE_STRING)) {
-         currentMailbox = system.findMailbox(accumulatedKeys);
+      if (key.equals(HASH_VALUE_STRING)) { 
+    	  	currentMailbox = system.findMailbox(accumulatedKeys);
          if (isCurrentMailBoxNotEmpty()) {
-            state = RECORDING;
-            phone.speak(currentMailbox.getGreeting());
+            state = RECORDING; 
+            notify(currentMailbox.getGreeting());
          }
          else {
-            phone.speak(INCORRECT_MAILBOX_NUMBER_MESSAGE);
-         }
-         accumulatedKeys = "";
-      } else {
-         accumulatedKeys += key;
-      }   
+        	 notify(INCORRECT_MAILBOX_NUMBER_MESSAGE);
+         } 
+         accumulatedKeys = ""; 
+      }else {   
+    	  accumulatedKeys += key;  
+      }
    }
 
    private void login(String key) {
-      if (key.equals(HASH_VALUE_STRING)) {
+      if (key.equals(HASH_VALUE_STRING)) { 
          if (currentMailbox.checkPasscodeOfMailBox(accumulatedKeys)) {
-            state = MAILBOX_MENU;
-            phone.speak(MAILBOX_MENU_TEXT);
+            state = MAILBOX_MENU; 
+            notify(MAILBOX_MENU_TEXT);
          }
          else {
-            phone.speak(INCORRECT_PASSCODE_MESSAGE);
+        	 notify(INCORRECT_PASSCODE_MESSAGE);
          }
          accumulatedKeys = "";
       }
       else {
-         accumulatedKeys += key;
+         accumulatedKeys += key; 
       }
    }
 
    private void changePasscode(String key) {
       if (key.equals(HASH_VALUE_STRING)) {
          currentMailbox.changePasscode(accumulatedKeys);
-         state = MAILBOX_MENU;
-         phone.speak(MAILBOX_MENU_TEXT);
+         state = MAILBOX_MENU; 
+         notify(MAILBOX_MENU_TEXT);
          accumulatedKeys = "";
       }
       else {
-         accumulatedKeys += key;
+         accumulatedKeys += key; 
       }
    }
 
@@ -126,50 +141,49 @@ public class Connection {
       if (key.equals(HASH_VALUE_STRING)) {
          currentMailbox.changeGreeting(currentRecording);
          currentRecording = "";
-         state = MAILBOX_MENU;
-         phone.speak(MAILBOX_MENU_TEXT);
+         state = MAILBOX_MENU; 
+     	notify(MAILBOX_MENU_TEXT);
       }
+        
    }
 
-   private void getMailboxMenu(String key) {
-	  String output = "";
+   private void getMailboxMenu(String key) { 
 	  switch(key) {
 		  case OPTION_ONE:
 			  state = MESSAGE_MENU;
-			  output += MESSAGE_MENU_TEXT;
+			  notify(MESSAGE_MENU_TEXT);
 			  break;
 		  case OPTION_TWO:
 			  state = CHANGE_PASSCODE;
-			  output += ENTER_NEW_PASSCODE_MESSAGE;
+			  notify(ENTER_NEW_PASSCODE_MESSAGE);
 			  break;
 		  case OPTION_THREE:
 			  state = CHANGE_GREETING;
-			  output += RECORD_YOUR_GREETING_MESSAGE;
+			  notify(RECORD_YOUR_GREETING_MESSAGE);
 			  break;
-		  default:
+		  /*default:
 			  state = MAILBOX_MENU;
-			  output += MAILBOX_MENU_TEXT;
-			  break;
-	  }
-	  phone.speak(output);
+			  notify(MAILBOX_MENU_TEXT);
+			  break;*/
+	  }  
    }
 
    private void getMessageMenu(String key) {
 	  String output = "";
 	  switch(key) {
 		  case OPTION_ONE:  
-			  Message message = getMessageOfCurrentMailBox();
+			  Message message = getCurrentMessageOfCurrentMailBox(); 
 			  output = getMessageStringOfGotMessage(output, message);
-			  break;
+ 			  break;
 		  case OPTION_TWO:
-			  currentMailbox.saveCurrentMessage();
-			  break;
+			  currentMailbox.saveCurrentMessage(); 
+ 			  break;
 		  case OPTION_THREE:
-			  currentMailbox.removeCurrentMessage();
-			  break;
+			  currentMailbox.removeCurrentMessage(); 
+ 			  break;
 		  case OPTION_FOUR:
 			  state = MAILBOX_MENU;
-			  output += MAILBOX_MENU_TEXT; 
+			  output+=MAILBOX_MENU_TEXT;
 			  break;
 		  default:
 			  state = MESSAGE_MENU;
@@ -178,7 +192,7 @@ public class Connection {
 	  if (isInMessageMenu()) {
 		  output += MESSAGE_MENU_TEXT;
 	  }
-	  phone.speak(output);
+	  notify(output);
    }
    
    public boolean isRecording() {
@@ -188,11 +202,11 @@ public class Connection {
    public boolean isConnected() {
 	   return state == CONNECTED;
    }
-   
+    
    public boolean isInMessageMenu() {
 	   return state == MESSAGE_MENU;
-   }
-   
+   }  
+    
    public boolean isChangePasscode() {
 	   return state == CHANGE_PASSCODE;
    }
@@ -221,7 +235,7 @@ public class Connection {
 		return message == null;
 	}
 	
-	public Message getMessageOfCurrentMailBox() {
+	public Message getCurrentMessageOfCurrentMailBox() {
 		return currentMailbox.getCurrentMessage();
 	}
 	

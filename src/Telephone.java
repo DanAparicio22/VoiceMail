@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
-public class Telephone
-{
+public class Telephone implements Observer {
 
    private static final int ZERO_COINCIDENCES = 0;
    private static final int ONE_VALUE = 1;
@@ -14,8 +13,8 @@ public class Telephone
 
    public void speak(String output) {
       System.out.println(output);
-   }
-
+   } 
+   
    public void run(Connection connection) {
       boolean activeConnection = true;
       while (activeConnection) {
@@ -42,7 +41,12 @@ public class Telephone
 	private boolean isDial(String input) {
 		return input.length() == ONE_VALUE && getCoincidences(input) >= ZERO_COINCIDENCES;
 	}
-
+  
+	@Override
+	public void update(String message) {
+		speak(message);
+	}
+	
 	private int getCoincidences(String input) {
 		return VALID_CHARACTERS_FOR_DIAL.indexOf(input);
 	}

@@ -9,14 +9,19 @@ public class ConnectionTest {
 	
 	Connection connection;
 	MailSystem mockedMailSystem;
-	Observer mockedTelephone;
-	
+	Telephone mockedTelephone;
+	Mailbox mockedCurrentMailbox;
 	@Before
 	public void init() {
 		mockedMailSystem = mock(MailSystem.class);
 		mockedTelephone = mock(Telephone.class);
+<<<<<<< HEAD
+		mockedCurrentMailbox = mock(Mailbox.class);
 		connection = new Connection(mockedMailSystem);
 		connection.attach(mockedTelephone);
+=======
+		connection = new Connection(mockedMailSystem, mockedTelephone);
+>>>>>>> origin/Develop
 	}
 	
 	@Test
@@ -41,6 +46,25 @@ public class ConnectionTest {
     }
 	
 	@Test
+<<<<<<< HEAD
+    public void deberiaPoderEntrarAlMailBox() {
+      String idMailBox = "1";
+      Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
+      
+      when(mockedMailSystem.findMailbox(idMailBox)).thenReturn(selectedMailBox);
+      connection.dial(idMailBox);
+      connection.dial("#");
+      connection.dial(idMailBox);
+      connection.dial("#");
+      assertTrue(connection.isLogging()); 
+    }
+	
+	@Test
+    public void deberiaNoPoderEntrarAlMailBox() {
+      String idMailBox = "1";
+      Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
+      
+=======
     public void shouldLoginCorrectlyInMailBox() {
       String idMailBox = "1";
       Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
@@ -51,20 +75,86 @@ public class ConnectionTest {
       connection.dial(idMailBox);
       connection.dial("#");
       assertTrue(connection.isInMailboxMenu());
-      verify(mockedTelephone).update("Enter 1 to listen to your messages\nEnter 2 to change your passcode\nEnter 3 to change your greeting");
+      verify(mockedTelephone).speak("Enter 1 to listen to your messages\nEnter 2 to change your passcode\nEnter 3 to change your greeting");
     }
 	
 	@Test
     public void shouldLoginWronglyInMailBox() {
       String idMailBox = "1";
       Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
+>>>>>>> origin/Develop
       when(mockedMailSystem.findMailbox(idMailBox)).thenReturn(selectedMailBox);
       connection.dial(idMailBox);
       connection.dial("#");
       connection.dial("2");
       connection.dial("#");
+<<<<<<< HEAD
+      assertFalse(connection.isLogging()); 
+    }
+	
+	@Test
+    public void deberiaPoderCambiarCodigoDeAcceso() {
+      String idMailBox = "1";
+      Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
+      
+      when(mockedMailSystem.findMailbox(idMailBox)).thenReturn(selectedMailBox);
+      connection.dial(idMailBox);
+      connection.dial("#");
+      connection.dial(idMailBox);
+      connection.dial("#");
+      connection.dial("2");   
+
+      assertTrue(connection.isChangingPassCode()); 
+      connection.dial("#");
+    }
+	
+	@Test
+    public void deberiaPoderCambiarSaludo() {
+      String idMailBox = "1";
+      Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
+      
+      when(mockedMailSystem.findMailbox(idMailBox)).thenReturn(selectedMailBox);
+      connection.dial(idMailBox);
+      connection.dial("#");
+      connection.dial(idMailBox);
+      connection.dial("#");
+      connection.dial("3"); 
+
+      assertTrue(connection.isChangingGreeting());  
+      connection.dial("#");
+    }
+	
+	@Test
+    public void deberiaPoderEntrarAlMenuDeMensajes() {
+      String idMailBox = "1";
+      Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
+      
+      when(mockedMailSystem.findMailbox(idMailBox)).thenReturn(selectedMailBox);
+      connection.dial(idMailBox);
+      connection.dial("#");
+      connection.dial(idMailBox);
+      connection.dial("#");
+      connection.dial("3"); 
+      connection.dial("#");
+      connection.dial("1"); 
+      connection.dial("#");
+      assertTrue(connection.isEnteringOptionOfMessageMenu());  
+      
+    }
+	
+	@Test
+    public void deberiaEstarEnEstadoConectado() {
+        assertTrue(connection.isConnected());
+    }
+	
+	@Test
+    public void deberiaMostrarElMesajeInicial() {
+		//verify(mockedTelephone).speak("Enter mailbox number followed by #");
+    }
+	 
+=======
       assertFalse(connection.isInMailboxMenu());
-      verify(mockedTelephone).update("Incorrect passcode. Try again!");
+      verify(mockedTelephone).speak("Incorrect passcode. Try again!");
     }
 	
 	@Test
@@ -96,7 +186,6 @@ public class ConnectionTest {
       String idMailBox = "1";
       Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
       when(mockedMailSystem.findMailbox(idMailBox)).thenReturn(selectedMailBox);
-      assertTrue(connection.isConnected());
       connection.dial(idMailBox);
       connection.dial("#");
       assertTrue(connection.isRecording());
@@ -105,10 +194,11 @@ public class ConnectionTest {
       assertTrue(connection.isInMailboxMenu());
       connection.dial("3");
       assertTrue(connection.isChangeGreeting());
+      assertFalse(connection.isInMailboxMenu());
       connection.dial("Saludos, deja tu mensaje");
       connection.dial("#");
       connection.dial("H");
-      assertTrue(connection.isInMailboxMenu());
+      assertFalse(connection.isChangeGreeting());
     }
 	
 	@Test
@@ -116,12 +206,12 @@ public class ConnectionTest {
       String idMailBox = "1";
       Mailbox selectedMailBox = new Mailbox(idMailBox, "Hola, como estas?");
       when(mockedMailSystem.findMailbox(idMailBox)).thenReturn(selectedMailBox);
-      assertTrue(connection.isConnected());
       connection.dial(idMailBox);
       connection.dial("#");
       assertTrue(connection.isRecording());
       connection.dial(idMailBox);
       connection.dial("#");
+      assertTrue(connection.isInMailboxMenu());
       connection.dial("4");
       assertTrue(connection.isInMailboxMenu());
     }
@@ -165,13 +255,13 @@ public class ConnectionTest {
       connection.dial("1");
       assertTrue(connection.isInMessageMenu());
       connection.dial("1");
-      (verify(mockedTelephone)).update(connection.getStringOfNoMessages() + "Enter 1 to listen to the current message\nEnter 2 to save the current message\n"
+      verify(mockedTelephone).speak(connection.getStringOfNoMessages() + "Enter 1 to listen to the current message\nEnter 2 to save the current message\n"
     	         + "Enter 3 to delete the current message\nEnter 4 to return to the main menu");
     }
 	
 	@Test
     public void shouldShowInitialMessage() {
-      verify(mockedTelephone).update("Enter mailbox number followed by #");
+      verify(mockedTelephone).speak("Enter mailbox number followed by #");
     }
 	
 	@Test
@@ -283,6 +373,7 @@ public class ConnectionTest {
 	@Test
 	public void shouldShowAMessageString() {
 		assertEquals("hola\n",connection.getMessageStringOfGotMessage("", new Message("hola")));
-	} 
+	}
 	
+>>>>>>> origin/Develop
 }

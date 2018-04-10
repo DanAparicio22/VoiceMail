@@ -6,10 +6,19 @@ public class MailSystemTester {
 	   
 	public static void main(String[] args) {
       MailSystem system = new MailSystem(MAILBOX_COUNT);
-      Scanner console = new Scanner(System.in);
-      Telephone phone = new Telephone(console);
-      Connection connection = new Connection(system, phone);
-      phone.run(connection);
+      
+      Scanner console = new Scanner(System.in);  
+
+      Connection c = new Connection(system);
+      
+      Observer observerConsole = new Telephone(console);
+      Observer observerUI = new UITelephone(c);
+     
+      c.attach(observerConsole);
+      c.attach(observerUI);
+       
+      ((Telephone) observerConsole).run(c);
+       
    }
 
 }
