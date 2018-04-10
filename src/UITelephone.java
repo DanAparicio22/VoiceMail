@@ -229,10 +229,10 @@ public class UITelephone extends JFrame implements Observer{
 	
 	public void processInput(Connection c,String key){   
 			if(!inputTextArea.getText().trim().isEmpty()){
-				c.record(inputTextArea.getText());
+				c.recordMessage(inputTextArea.getText());
 			}  
 			if(key.equalsIgnoreCase("H")){ 
-				c.hangup();
+				c.hangUp();
 			} else if (key.equalsIgnoreCase("Q")){ 
 			     this.setVisible(false);  
 			     this.dispose();

@@ -12,12 +12,13 @@ public class MailSystemTest {
 	}
 	
 	@Test
-	public void deberiaDevolverUnMailBoxBuscado() {
+	public void shouldReturnAFindedMailBox() {
 		assertNotNull(mailSystem.findMailbox("1"));
 	}
 	
 	@Test
-	public void deberiaNoDevolverUnMailBoxBuscado() {
-		assertNull(mailSystem.findMailbox("15"));
+	public void shouldNotReturnAFindedMailBox() {
+		assertNull(mailSystem.findMailbox("0"));
+		assertNull(mailSystem.findMailbox("11"));
 	}
 }
