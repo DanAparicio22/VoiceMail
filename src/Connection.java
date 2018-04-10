@@ -144,9 +144,7 @@ public class Connection
          accumulatedKeys = "";
       }
       else
-         accumulatedKeys += key;
-    
-  
+         accumulatedKeys += key; 
    }
 
    /**

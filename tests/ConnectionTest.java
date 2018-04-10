@@ -29,7 +29,7 @@ public class ConnectionTest {
       connection.dial("#");
 
       assertTrue(connection.isRecording());
-      //verify(mockedTelephone).speak(selectedMailBox.getGreeting());
+      verify(mockedTelephone).update(selectedMailBox.getGreeting());
     }
 	
 	@Test
