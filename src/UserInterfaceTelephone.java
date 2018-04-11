@@ -27,9 +27,6 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 	private static final String EMPTY_INPUT = "";
 	private static final String HANG_UP = "H";
 	private static final String QUIT_CONNECTION = "Q";
-	private static final String KEYS_FOR_DIAL = "1234567890#";
-	private static final int ZERO_COINCIDENCES = 0;
-	private static final int LENGTH_ONE = 1;
 	private JPanel contentPane;
 	public JTextArea answerMessageTextArea; 
 	private JButton buttonConfirm;
@@ -263,20 +260,14 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 		this.answerMessageTextArea.setText(message);
 	}
 	
-	public void processInput(String input) {  
-		if(isNotEmptyMessageInput()) {
-			telephoneService.recordMessage(getMessageInput());
-		}
-		if(isHangUp(input)) {
-			telephoneService.hangUp();
+	public void processInput(String input) {
+		if (isQuittingOfConnection(input)) {
+			quittingConnection();
 		} else {
-			if (isQuittingOfConnection(input)) {
-				quittingConnection();
-			} else {
-				if(isDial(input)) {
-					telephoneService.dial(input);
-				}
+			if(isNotEmptyMessageInput()) {
+				telephoneService.processInput(getMessageInput());
 			}
+			telephoneService.processInput(input);
 		}
 		setMessageInput(EMPTY_INPUT);
 	}
@@ -293,14 +284,6 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 		messageInputTextArea.setText(newMessageInput);
 	}
 
-	private boolean isDial(String key) {
-		return key.length() == LENGTH_ONE && getCoincidencesInput(key) >= ZERO_COINCIDENCES;
-	}
-
-	private int getCoincidencesInput(String key) {
-		return KEYS_FOR_DIAL.indexOf(key);
-	}
-
 	private void quittingConnection() {
 		this.setVisible(false);  
 		this.dispose();
@@ -311,7 +294,4 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 		return key.equalsIgnoreCase(QUIT_CONNECTION);
 	}
 
-	private boolean isHangUp(String key) {
-		return key.equalsIgnoreCase(HANG_UP);
-	}
 }

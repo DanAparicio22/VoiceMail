@@ -31,5 +31,23 @@ public class UserInterfaceTelephoneServiceTest {
 		telephoneService.recordMessage("hola");
 		verify(mockedConnection).recordMessage("hola");
 	}
+	
+	@Test
+	public void shouldVerifyIfProcessInputWhenRecordMessage() {
+		telephoneService.processInput("hola");
+		verify(mockedConnection).recordMessage("hola");
+	}
+	
+	@Test
+	public void shouldVerifyIfProcessInputWhenDial() {
+		telephoneService.processInput("1");
+		verify(mockedConnection).dial("1");
+	}
+	
+	@Test
+	public void shouldVerifyIfProcessInputWhenhangUp() {
+		telephoneService.processInput("H");
+		verify(mockedConnection).hangUp();
+	}
 
 }
