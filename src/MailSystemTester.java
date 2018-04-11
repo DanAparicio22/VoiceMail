@@ -10,7 +10,8 @@ public class MailSystemTester {
       Scanner console = new Scanner(System.in);  
       Connection connection = new Connection(system);
       Telephone observerConsole = new ConsoleTelephone(console);
-      Telephone observerUI = new UserInterfaceTelephone(connection);
+      UserInterfaceTelephoneService telephoneService = new UserInterfaceTelephoneService(connection);
+      Telephone observerUI = new UserInterfaceTelephone(telephoneService);
       connection.attachObserver(observerConsole);
       connection.attachObserver(observerUI);
       ((ConsoleTelephone) observerConsole).runConnection(connection);

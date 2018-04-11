@@ -47,10 +47,10 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 	private JTextArea messageInputTextArea;
 	private UserInterfaceTelephoneService telephoneService;
  
-	public UserInterfaceTelephone(Connection connection) {
+	public UserInterfaceTelephone(UserInterfaceTelephoneService telephoneService) {
 		initialize();
 		this.setVisible(true);
-		telephoneService = new UserInterfaceTelephoneService(connection);
+		this.telephoneService = telephoneService;
 	}
  
 	private void initialize() {
