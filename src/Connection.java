@@ -44,7 +44,7 @@ public class Connection {
    public void updateNewObserver(){
 	    this.observers.get(this.observers.size()-1).updateMessage(INITIAL_PROMPT);
    }
-   
+
    public void notify(String message){
 	   for(Telephone observer : observers){
 		   observer.updateMessage(message);
@@ -85,6 +85,10 @@ public class Connection {
          currentMailbox.addMessageInMailBox(new Message(currentRecording));
       }
       resetConnection();
+   }
+   
+   public void quit() {
+	   System.exit(0);
    }
  
    private void resetConnection() {

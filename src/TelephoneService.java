@@ -1,13 +1,14 @@
 
-public class UserInterfaceTelephoneService {
+public class TelephoneService {
 	
 	private static final String KEYS_FOR_DIAL = "1234567890#";
 	private static final int ZERO_COINCIDENCES = 0;
 	private static final int LENGTH_ONE = 1;
 	private static final String HANG_UP = "H";
+	private static final String QUIT_CONNECTION = "Q";
 	Connection connection;
 	
-	public UserInterfaceTelephoneService(Connection connection) {
+	public TelephoneService(Connection connection) {
 		this.connection = connection;
 	}
 
@@ -23,6 +24,10 @@ public class UserInterfaceTelephoneService {
 		connection.dial(input);
 	}
 	
+	public void quitApplication() {
+		connection.quit();
+	}
+	
 	public void processInput(String input) {
 		if(isHangUp(input)) {
 			hangUp();
@@ -30,9 +35,17 @@ public class UserInterfaceTelephoneService {
 			if(isDial(input)) {
 				dial(input);
 			} else {
-				recordMessage(input);
+				if (isQuittingOfConnection(input)) {
+					quitApplication();
+				} else {
+					recordMessage(input);
+				}
 			}
 		}
+	}
+	
+	public boolean isQuittingOfConnection(String input) {
+		return input.equalsIgnoreCase(QUIT_CONNECTION);
 	}
 	
 	private boolean isHangUp(String key) {
