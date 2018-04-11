@@ -45,6 +45,12 @@ public class Connection {
 	    this.observers.get(this.observers.size()-1).updateMessage(INITIAL_PROMPT);
    }
    
+   public void runApplications(){
+	   for (int i = 0; i < observers.size(); i++) {
+		   observers.get(i).runConnection();
+	   }
+   }
+
    public void notify(String message){
 	   for(Telephone observer : observers){
 		   observer.updateMessage(message);
