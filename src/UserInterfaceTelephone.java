@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
  
-public class UserInterfaceTelephone extends JFrame implements Telephone{
+public class UserInterfaceTelephone extends JFrame implements Telephone {
 
 	private static final long serialVersionUID = 1L;
 	private static final String KEY_CONFIRM = "#";
@@ -255,8 +255,8 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 	} 
 	
 	@Override
-	public void updateMessage(String message) { 
-		setAnswerMessage(message); 
+	public void updateMessage(String message) {
+		setAnswerMessage(message);
 	}
 
 	private void setAnswerMessage(String message) {
