@@ -1,33 +1,18 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import java.awt.Button;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.DropMode;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextPane;
 import javax.swing.JTextArea;
-import java.awt.ScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
  
-public class UserInterfaceTelephone extends JFrame implements Telephone{
+public class UserInterfaceTelephone extends JFrame implements Telephone {
 
+	private static final long serialVersionUID = 1L;
 	private static final String KEY_CONFIRM = "#";
 	private static final String KEY_HANG_UP = "h";
 	private static final String KEY_NINE = "9";
@@ -39,228 +24,265 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 	private static final String KEY_THREE = "3";
 	private static final String KEY_TWO = "2";
 	private static final String KEY_ONE = "1";
-	private static final String INPUT_EMPTY = "";
+	private static final String EMPTY_INPUT = "";
 	private static final String HANG_UP = "H";
 	private static final String QUIT_CONNECTION = "Q";
 	private static final String KEYS_FOR_DIAL = "1234567890#";
 	private static final int ZERO_COINCIDENCES = 0;
 	private static final int LENGTH_ONE = 1;
 	private JPanel contentPane;
-	public JTextArea answerMessage; 
-	private JButton inputConfirm;
-	private JButton inputHangUp;
-	private JButton inputQuitConnection; 
-	private JButton inputKey1;
-	private JButton inputKey2;
-	private JButton inputKey3;
-	private JButton inputKey4;
-	private JButton inputKey5;
-	private JButton inputKey6;
-	private JButton inputKey7;
-	private JButton inputKey8;
-	private JButton inputKey9; 
-	private JTextArea messageInput;
+	public JTextArea answerMessageTextArea; 
+	private JButton buttonConfirm;
+	private JButton buttonHangUp;
+	private JButton buttonQuitConnection; 
+	private JButton buttonOfNumber1;
+	private JButton buttonOfNumber2;
+	private JButton buttonOfNumber3;
+	private JButton buttonOfNumber4;
+	private JButton buttonOfNumber5;
+	private JButton buttonOfNumber6;
+	private JButton buttonOfNumber7;
+	private JButton buttonOfNumber8;
+	private JButton buttonOfNumber9;
+	private JTextArea messageInputTextArea;
+	private UserInterfaceTelephoneService telephoneService;
  
 	public UserInterfaceTelephone(Connection connection) {
-		initialize(connection);
+		initialize();
 		this.setVisible(true);
+		telephoneService = new UserInterfaceTelephoneService(connection);
 	}
  
-	private void initialize(Connection connection) {
+	private void initialize() {
+		generateContentPane();
+		generateNumberButtonsForContentPane();
+		generateHangUpButtonForContentPane();
+		generateConfirmButtonForContentPane();
+		generateQuitButtonForContentPane();		
+		generateAnswerMessageTextAreaForContentPane();
+		generateMessageTextAreaForContentPane();
+		generateLabelMessageInputForContentPane();
+		generateLabelAnswerForContentPane();
+		giveActionToNumberButtons();
+		giveActionToHangUpButton();
+		giveActionToConfirmButton();
+		giveActionToQuitButton();
+	}
+
+	private void generateLabelMessageInputForContentPane() {
+		JLabel labelMessageInput = new JLabel("Write here your message.");
+		labelMessageInput.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		labelMessageInput.setBounds(30, 378, 166, 21);
+		contentPane.add(labelMessageInput);
+	}
+
+	private void generateLabelAnswerForContentPane() {
+		JLabel labelAnswer = new JLabel("Answer.");
+		labelAnswer.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		labelAnswer.setBounds(30, 21, 166, 21);
+		contentPane.add(labelAnswer);
+	}
+
+	private void generateMessageTextAreaForContentPane() {
+		JScrollPane scrollMessageInput = new JScrollPane();
+		scrollMessageInput.setBounds(30, 403, 390, 97);
+		contentPane.add(scrollMessageInput);
+		messageInputTextArea = new JTextArea(4, 10);
+		scrollMessageInput.setViewportView(messageInputTextArea);
+		messageInputTextArea.setForeground(Color.BLUE);
+		messageInputTextArea.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		messageInputTextArea.setBackground(Color.WHITE);
+	}
+
+	private void generateAnswerMessageTextAreaForContentPane() {
+		JScrollPane scrollAnswerMessage = new JScrollPane();
+		scrollAnswerMessage.setBounds(30, 45, 390, 128);
+		contentPane.add(scrollAnswerMessage);
+		answerMessageTextArea = new JTextArea(4,10);
+		scrollAnswerMessage.setViewportView(answerMessageTextArea);
+		answerMessageTextArea.setEditable(false);
+		answerMessageTextArea.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		answerMessageTextArea.setBackground(Color.WHITE);
+		answerMessageTextArea.setForeground(Color.BLUE);
+	}
+
+	private void giveActionToQuitButton() {
+		buttonQuitConnection.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				quittingConnection();
+			}
+		});
+	}
+
+	private void giveActionToConfirmButton() {
+		buttonConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 processInput(KEY_CONFIRM);
+			}
+		});
+	}
+
+	private void giveActionToHangUpButton() {
+		buttonHangUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				processInput(KEY_HANG_UP);
+			}
+		});
+	}
+
+	private void giveActionToNumberButtons() {
+		buttonOfNumber1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { 
+				processInput(KEY_ONE);
+			}
+		});  
+		buttonOfNumber2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processInput(KEY_TWO);
+			}
+		});  
+		buttonOfNumber3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processInput(KEY_THREE);
+			}
+		});  
+		buttonOfNumber4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processInput(KEY_FOUR);
+			}
+		});  
+		buttonOfNumber5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processInput(KEY_FIVE);
+			}
+		});  
+		buttonOfNumber6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processInput(KEY_SIX);
+			}
+		});  
+		buttonOfNumber7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processInput(KEY_SEVEN);
+			}
+		});  
+		buttonOfNumber8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				processInput(KEY_EIGHT);
+			}
+		});  
+		buttonOfNumber9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 processInput(KEY_NINE);
+				
+			}
+		});
+	}
+
+	private void generateQuitButtonForContentPane() {
+		buttonQuitConnection = new JButton("Quit");
+		buttonQuitConnection.setActionCommand(QUIT_CONNECTION);
+		buttonQuitConnection.setFont(new Font("Dialog", Font.BOLD, 15));
+		buttonQuitConnection.setBackground(Color.GRAY);
+		buttonQuitConnection.setBounds(281, 317, 118, 50);
+		contentPane.add(buttonQuitConnection);
+	}
+
+	private void generateConfirmButtonForContentPane() {
+		buttonConfirm = new JButton("Confirm #");
+		buttonConfirm.setActionCommand(KEY_CONFIRM);
+		buttonConfirm.setFont(new Font("Dialog", Font.BOLD, 15));
+		buttonConfirm.setBackground(Color.GREEN);
+		buttonConfirm.setBounds(281, 188, 118, 50);
+		contentPane.add(buttonConfirm);
+	}
+
+	private void generateHangUpButtonForContentPane() {
+		buttonHangUp = new JButton("Hang up");
+		buttonHangUp.setActionCommand(HANG_UP);
+		buttonHangUp.setFont(new Font("Dialog", Font.BOLD, 15));
+		buttonHangUp.setBackground(Color.RED); 
+		buttonHangUp.setBounds(281, 254, 118, 50);
+		contentPane.add(buttonHangUp);
+	}
+
+	private void generateNumberButtonsForContentPane() {
+		buttonOfNumber1 = new JButton(KEY_ONE);
+		buttonOfNumber1.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber1.setBounds(61, 317, 50, 50);
+		contentPane.add(buttonOfNumber1);
+		buttonOfNumber2 = new JButton(KEY_TWO);
+		buttonOfNumber2.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber2.setBounds(133, 317, 50, 50);
+		contentPane.add(buttonOfNumber2);
+		buttonOfNumber3 = new JButton(KEY_THREE);
+		buttonOfNumber3.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber3.setBounds(207, 317, 50, 50);
+		contentPane.add(buttonOfNumber3);
+		buttonOfNumber4 = new JButton(KEY_FOUR);
+		buttonOfNumber4.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber4.setBounds(61, 254, 50, 50);
+		contentPane.add(buttonOfNumber4);
+		buttonOfNumber5 = new JButton(KEY_FIVE);
+		buttonOfNumber5.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber5.setBounds(133, 254, 50, 50);
+		contentPane.add(buttonOfNumber5);
+		buttonOfNumber6 = new JButton(KEY_SIX);
+		buttonOfNumber6.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber6.setBounds(207, 254, 50, 50);
+		contentPane.add(buttonOfNumber6);
+		buttonOfNumber7 = new JButton(KEY_SEVEN);
+		buttonOfNumber7.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber7.setBounds(61, 188, 50, 50);
+		contentPane.add(buttonOfNumber7);
+		buttonOfNumber8 = new JButton(KEY_EIGHT);
+		buttonOfNumber8.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber8.setBounds(133, 188, 50, 50);
+		contentPane.add(buttonOfNumber8);
+		buttonOfNumber9 = new JButton(KEY_NINE);
+		buttonOfNumber9.setFont(new Font("Dialog", Font.PLAIN, 20));
+		buttonOfNumber9.setBounds(207, 188, 50, 50);
+		contentPane.add(buttonOfNumber9);
+	}
+
+	private void generateContentPane() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 478, 549);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		inputKey1 = new JButton(KEY_ONE);
-		inputKey1.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey1.setBounds(61, 317, 50, 50);
-		contentPane.add(inputKey1);
-		
-		inputKey2 = new JButton(KEY_TWO);
-		inputKey2.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey2.setBounds(133, 317, 50, 50);
-		contentPane.add(inputKey2);
-		
-		inputKey3 = new JButton(KEY_THREE);
-		inputKey3.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey3.setBounds(207, 317, 50, 50);
-		contentPane.add(inputKey3);
-		
-		inputKey4 = new JButton(KEY_FOUR);
-		inputKey4.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey4.setBounds(61, 254, 50, 50);
-		contentPane.add(inputKey4);
-		
-		inputKey5 = new JButton(KEY_FIVE);
-		inputKey5.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey5.setBounds(133, 254, 50, 50);
-		contentPane.add(inputKey5);
-		
-		inputKey6 = new JButton(KEY_SIX);
-		inputKey6.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey6.setBounds(207, 254, 50, 50);
-		contentPane.add(inputKey6);
-		
-		inputKey7 = new JButton(KEY_SEVEN);
-		inputKey7.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey7.setBounds(61, 188, 50, 50);
-		contentPane.add(inputKey7);
-		
-		inputKey8 = new JButton(KEY_EIGHT);
-		inputKey8.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey8.setBounds(133, 188, 50, 50);
-		contentPane.add(inputKey8);
-		
-		inputKey9 = new JButton(KEY_NINE);
-		inputKey9.setFont(new Font("Dialog", Font.PLAIN, 20));
-		inputKey9.setBounds(207, 188, 50, 50);
-		contentPane.add(inputKey9);
-		
-		inputHangUp = new JButton("Hang up");
-		inputHangUp.setActionCommand(HANG_UP);
-		inputHangUp.setFont(new Font("Dialog", Font.BOLD, 15));
-		inputHangUp.setBackground(Color.RED); 
-		inputHangUp.setBounds(281, 254, 118, 50);
-		contentPane.add(inputHangUp);
-		
-		inputConfirm = new JButton("Confirm #");
-		inputConfirm.setActionCommand(KEY_CONFIRM);
-		 
-		inputConfirm.setFont(new Font("Dialog", Font.BOLD, 15));
-		inputConfirm.setBackground(Color.GREEN);
-		inputConfirm.setBounds(281, 188, 118, 50);
-		contentPane.add(inputConfirm);
-		
-		inputQuitConnection = new JButton("Quit");
-		inputQuitConnection.setActionCommand(QUIT_CONNECTION);
-		inputQuitConnection.setFont(new Font("Dialog", Font.BOLD, 15));
-		inputQuitConnection.setBackground(Color.GRAY);
-		inputQuitConnection.setBounds(281, 317, 118, 50);
-		contentPane.add(inputQuitConnection);
-		
-		JScrollPane scrollAnswerMessage = new JScrollPane();
-		scrollAnswerMessage.setBounds(30, 45, 390, 128);
-		contentPane.add(scrollAnswerMessage);
-		
-		answerMessage = new JTextArea(4,10);
-		scrollAnswerMessage.setViewportView(answerMessage);
-		answerMessage.setEditable(false);
-		answerMessage.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		answerMessage.setBackground(Color.WHITE);
-		answerMessage.setForeground(Color.BLUE);
-		
-		JScrollPane scrollMessageInput = new JScrollPane();
-		scrollMessageInput.setBounds(30, 403, 390, 97);
-		contentPane.add(scrollMessageInput);
-		
-		messageInput = new JTextArea(4, 10);
-		scrollMessageInput.setViewportView(messageInput);
-		messageInput.setForeground(Color.BLUE);
-		messageInput.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		messageInput.setBackground(Color.WHITE);
-		
-		JLabel labelMessageInput = new JLabel("Write here your message.");
-		labelMessageInput.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		labelMessageInput.setBounds(30, 378, 166, 21);
-		contentPane.add(labelMessageInput);
-		
-		JLabel labelAnswer = new JLabel("Answer.");
-		labelAnswer.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		labelAnswer.setBounds(30, 21, 166, 21);
-		contentPane.add(labelAnswer);
-		 
-		inputKey1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { 
-				processInput(connection,KEY_ONE);
-			}
-		});  
-		inputKey2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_TWO);
-			}
-		});  
-		inputKey3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_THREE);
-			}
-		});  
-		inputKey4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_FOUR);
-			}
-		});  
-		inputKey5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_FIVE);
-			}
-		});  
-		inputKey6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_SIX);
-			}
-		});  
-		inputKey7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_SEVEN);
-			}
-		});  
-		inputKey8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_EIGHT);
-			}
-		});  
-		inputKey9.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 processInput(connection,KEY_NINE);
-				
-			}
-		});  
-		inputHangUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { 
-				processInput(connection,KEY_HANG_UP);
-			}
-		}); 
-		inputConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 processInput(connection,KEY_CONFIRM);
-			}
-		}); 
-		 
-		inputQuitConnection.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				quittingConnection();
-			}
-		});   
 	} 
 	
 	@Override
-	public void update(String message) { 
-		setAnswerMessage(message); 
+	public void updateMessage(String message) {
+		setAnswerMessage(message);
 	}
 
 	private void setAnswerMessage(String message) {
-		this.answerMessage.setText(message);
+		this.answerMessageTextArea.setText(message);
 	}
 	
-	public void processInput(Connection c,String input){  
-		if(isNotEmptyMessageInput()){
-				c.recordMessage(getMessageInput());
-			}  
-			if(isHangUp(input)){ 
-				c.hangUp();
-			} else if (isQuittingOfConnection(input)){ 
-			     quittingConnection();
-	         }else if(isDial(input)){
-	        	 c.dial(input);
-	         }
-			  setMessageInput(INPUT_EMPTY);
+	public void processInput(String input) {  
+		if(isNotEmptyMessageInput()) {
+			telephoneService.recordMessage(getMessageInput());
+		}
+		if(isHangUp(input)) {
+			telephoneService.hangUp();
+		} else {
+			if (isQuittingOfConnection(input)) {
+				quittingConnection();
+			} else {
+				if(isDial(input)) {
+					telephoneService.dial(input);
+				}
+			}
+		}
+		setMessageInput(EMPTY_INPUT);
 	}
 	
 	private String getMessageInput() {
-		return messageInput.getText();
+		return messageInputTextArea.getText();
 	}
 	
 	private boolean isNotEmptyMessageInput() {
@@ -268,13 +290,11 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 	} 
 
 	public void setMessageInput(String newMessageInput) {
-		messageInput.setText(newMessageInput);
+		messageInputTextArea.setText(newMessageInput);
 	}
 
-
 	private boolean isDial(String key) {
-		return key.length() == LENGTH_ONE
-		    && getCoincidencesInput(key) >= ZERO_COINCIDENCES;
+		return key.length() == LENGTH_ONE && getCoincidencesInput(key) >= ZERO_COINCIDENCES;
 	}
 
 	private int getCoincidencesInput(String key) {
@@ -283,8 +303,8 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 
 	private void quittingConnection() {
 		this.setVisible(false);  
-		 this.dispose();
-		 System.exit(0);
+		this.dispose();
+		System.exit(0);
 	}
 
 	private boolean isQuittingOfConnection(String key) {

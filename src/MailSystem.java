@@ -10,19 +10,21 @@ public class MailSystem {
 
     public MailSystem(int numberOfMailBoxes) {
 	   mailboxes = new ArrayList<Mailbox>();
+	   String passcode, greeting;
+	   int numberOfMailBox;
 	   for (int number = INITIAL_MAILBOX_COUNT; number < numberOfMailBoxes; number++) {
-		   int numberOfMailBox = getNumberForMailBox(number);
-		   String passcode = getPasswordStringForMailBox(numberOfMailBox);
-		   String greeting = getGreetingStringForMailBox(numberOfMailBox);
+		   numberOfMailBox = getNumberForMailBox(number);
+		   passcode = covertNumberForPasswordOfMailBox(numberOfMailBox);
+		   greeting = getGreetingStringForMailBox(numberOfMailBox);
 		   mailboxes.add(new Mailbox(passcode, greeting));
 	   }
     }
     
     public Mailbox findMailbox(String stringNumberOfMailBox) {
     	Mailbox findedMailbox = null;
-    	int numberOfMailBox = Integer.parseInt(stringNumberOfMailBox);
+    	int numberOfMailBox = convertStringToNumberForMailBox(stringNumberOfMailBox);
     	if (isValidNumberOfMailBox(numberOfMailBox)) {
-    		findedMailbox = mailboxes.get(numberOfMailBox - ONE_POSITION_MAILBOXES);
+    		findedMailbox = getMailBox(numberOfMailBox);
     	}
     	return findedMailbox;
     }
@@ -39,8 +41,16 @@ public class MailSystem {
 		return "You have reached mailbox " + numberOfMailBox + ". \nPlease leave a message now.";
 	}
 
-	private String getPasswordStringForMailBox(int numberOfMailBox) {
+	private String covertNumberForPasswordOfMailBox(int numberOfMailBox) {
 		return Integer.toString(numberOfMailBox);
+	}
+	
+	private Mailbox getMailBox(int numberOfMailBox) {
+		return mailboxes.get(numberOfMailBox - ONE_POSITION_MAILBOXES);
+	}
+
+	private int convertStringToNumberForMailBox(String stringNumberOfMailBox) {
+		return Integer.parseInt(stringNumberOfMailBox);
 	}
 
 }

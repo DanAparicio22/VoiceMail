@@ -27,26 +27,33 @@ public class Mailbox {
    public Message getCurrentMessage() {
 	  Message currentMessage = null;
       if (haveSomeMessage(newMessages)) {
-         currentMessage = newMessages.peekLastMessage();
+         currentMessage = peekMessageOf(newMessages);
       } else {
     	  if (haveSomeMessage(keptMessages)) {
-    		  currentMessage = keptMessages.peekLastMessage();
+    		  currentMessage = peekMessageOf(keptMessages);
     	  }
       }
       return currentMessage;
    }
 
-
    public Message removeCurrentMessage() {
 	  Message currentMessage = null;
       if (haveSomeMessage(newMessages)) {
-    	  currentMessage = newMessages.removeMessage();
+    	  currentMessage = removeMessageOf(newMessages);
       } else {
     	  if (haveSomeMessage(keptMessages)) {
-    		  currentMessage = keptMessages.removeMessage();
+    		  currentMessage = removeMessageOf(keptMessages);
     	  }
       }
       return currentMessage;
+   }
+   
+   private Message removeMessageOf(MessageQueue messageQueue) {
+	   return messageQueue.removeMessage();
+   }
+   
+   private Message peekMessageOf(MessageQueue messageQueue) {
+		return messageQueue.peekLastMessage();
    }
 	
 	private boolean haveSomeMessage(MessageQueue messageQueue) {

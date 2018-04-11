@@ -5,10 +5,11 @@ import java.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TelephoneTest {
+public class ConsoleTelephoneTest {
 	
 	Connection mockedConnection;
 	ConsoleTelephone telephone;
+	String data;
 	
 	@Before
 	public void init() {
@@ -17,45 +18,45 @@ public class TelephoneTest {
 	
 	@Test
 	public void shouldVerifyIfIsHangUp() {
-		String data = "H" + System.getProperty("line.separator") + "Q";
+		data = "H" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new ConsoleTelephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).hangUp();
 	}
 	
 	@Test
 	public void shouldVerifyIfInputIsNull() {
-		String data = System.getProperty("line.separator") + "Q";
+		data = System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new ConsoleTelephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 	}
 	
 	@Test
 	public void shouldVerifyIfIsDial() {
-		String data = "1" +  System.getProperty("line.separator") + "#" + System.getProperty("line.separator") + "Q";
+		data = "1" +  System.getProperty("line.separator") + "#" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new ConsoleTelephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).dial("1");
 	}
 	
 	@Test
 	public void shouldVerifyIfIsRecordOneCharacter() {
-		String data = "a" + System.getProperty("line.separator") + "Q";
+		data = "a" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new ConsoleTelephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).recordMessage("a");
 	}
 	
 	@Test
 	public void shouldVerifyIfIsRecordAWord() {
-		String data = "ab" + System.getProperty("line.separator") + "Q";
+		data = "ab" + System.getProperty("line.separator") + "Q";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		telephone = new ConsoleTelephone(new Scanner(System.in));
-		telephone.run(mockedConnection);
+		telephone.runConnection(mockedConnection);
 		verify(mockedConnection).recordMessage("ab");
 	}
 

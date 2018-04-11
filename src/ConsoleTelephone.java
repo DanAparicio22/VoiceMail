@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class ConsoleTelephone implements Telephone {
 
    private static final String HANG_UP = "H";
-private static final String QUIT_CONNECTION = "Q";
-private static final int ZERO_COINCIDENCES = 0;
+   private static final String QUIT_CONNECTION = "Q";
+   private static final int ZERO_COINCIDENCES = 0;
    private static final int LENGTH_ONE = 1;
    private static final String VALID_CHARACTERS_FOR_DIAL = "1234567890#";
    private Scanner scanner;
@@ -17,13 +17,10 @@ private static final int ZERO_COINCIDENCES = 0;
       System.out.println(output);
    } 
    
-   public void run(Connection connection) {
+    public void runConnection(Connection connection) {
       boolean activeConnection = true;
       while (activeConnection) {
          String input = scanner.nextLine();
-         if (input.isEmpty()) {
-        	 return;
-         }
          if (isHangUp(input)) {
             connection.hangUp();
          } else {
@@ -36,17 +33,15 @@ private static final int ZERO_COINCIDENCES = 0;
         			 connection.recordMessage(input);
         		 }
         	 }
-         }
+         }   
       }
-   }
+    }
 
-  
 	@Override
-	public void update(String message) {
+	public void updateMessage(String message) {
 		speak(message);
 	}
 	
-
 	private boolean isQuittingOfConnection(String input) {
 		return input.equalsIgnoreCase(QUIT_CONNECTION);
 	}

@@ -36,18 +36,18 @@ public class Connection {
       resetConnection();   
    } 
    
-   public void attach(Telephone o){
-	   this.observers.add(o); 
+   public void attachObserver(Telephone observer){
+	   this.observers.add(observer); 
 	   updateNewObserver();
    } 
    
    public void updateNewObserver(){
-	    this.observers.get(this.observers.size()-1).update(INITIAL_PROMPT);
+	    this.observers.get(this.observers.size()-1).updateMessage(INITIAL_PROMPT);
    }
    
    public void notify(String message){
 	   for(Telephone observer : observers){
-		   observer.update(message);
+		   observer.updateMessage(message);
 	   }
    }
 
