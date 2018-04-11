@@ -37,7 +37,7 @@ public class ConnectionTest {
 		  mockedMailSystem = mock(MailSystem.class);
 		  mockedTelephone = mock(ConsoleTelephone.class);
 		  connection = new Connection(mockedMailSystem);
-		  connection.attach(mockedTelephone);
+		  connection.attachObserver(mockedTelephone);
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class ConnectionTest {
 		  assertTrue(connection.isConnected());
 		  inputConfirm(idMailBox);
 		  assertTrue(connection.isRecording());
-		  verify(mockedTelephone).update(selectedMailBox.getGreeting());
+		  verify(mockedTelephone).updateMessage(selectedMailBox.getGreeting());
     }
 	
 	@Test
@@ -68,7 +68,7 @@ public class ConnectionTest {
 		  assertTrue(connection.isRecording());
 	      inputConfirm(idMailBox); 
 		  assertTrue(connection.isInMailboxMenu());
-	      verify(mockedTelephone).update("Enter 1 to listen to your messages\nEnter 2 to change your passcode\nEnter 3 to change your greeting");
+	      verify(mockedTelephone).updateMessage("Enter 1 to listen to your messages\nEnter 2 to change your passcode\nEnter 3 to change your greeting");
     }
 	
 	@Test
@@ -80,7 +80,7 @@ public class ConnectionTest {
 		  assertTrue(connection.isRecording());
 		  inputConfirm("2"); 
 		  assertFalse(connection.isInMailboxMenu());
-		  verify(mockedTelephone).update("Incorrect passcode. Try again!");
+		  verify(mockedTelephone).updateMessage("Incorrect passcode. Try again!");
     }
 	
 	@Test
@@ -164,13 +164,13 @@ public class ConnectionTest {
 	      giveInputOption("1");
 	      assertTrue(connection.isInMessageMenu());
 	      giveInputOption("1");
-	      (verify(mockedTelephone)).update(connection.getStringOfNoMessages() + "Enter 1 to listen to the current message\nEnter 2 to save the current message\n"
+	      (verify(mockedTelephone)).updateMessage(connection.getStringOfNoMessages() + "Enter 1 to listen to the current message\nEnter 2 to save the current message\n"
     	         + "Enter 3 to delete the current message\nEnter 4 to return to the main menu");
     }
 	
 	@Test
     public void shouldShowInitialMessage() {
-		  verify(mockedTelephone).update("Enter mailbox number followed by #");
+		  verify(mockedTelephone).updateMessage("Enter mailbox number followed by #");
     }
 	
 	@Test

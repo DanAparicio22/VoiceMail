@@ -1,15 +1,9 @@
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-
-import java.io.ByteArrayInputStream;
-import java.util.Scanner;
-
 import org.junit.Before;
 import org.junit.Test;
 
 public class UserInterfaceTelephoneTest {
-
 
 	Connection mockedConnection;
 	UserInterfaceTelephone userInterfaceTelephone;
@@ -17,7 +11,7 @@ public class UserInterfaceTelephoneTest {
 	@Before
 	public void init() {
 		mockedConnection = mock(Connection.class);
-		mockedConnection.attach(userInterfaceTelephone);
+		mockedConnection.attachObserver(userInterfaceTelephone);
 	}
 	
 	@Test
@@ -26,7 +20,6 @@ public class UserInterfaceTelephoneTest {
 		userInterfaceTelephone.processInput(mockedConnection, "h");
 		verify(mockedConnection).hangUp();
 	}
-	 
 	
 	@Test
 	public void shouldVerifyIfIsDial() { 
@@ -43,8 +36,5 @@ public class UserInterfaceTelephoneTest {
 		userInterfaceTelephone.processInput(mockedConnection, "h");
 		verify(mockedConnection).recordMessage("hola");
 	}
-	
-	 
-	
 
 }

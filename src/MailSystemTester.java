@@ -14,10 +14,10 @@ public class MailSystemTester {
       Telephone observerConsole = new ConsoleTelephone(console);
       Telephone observerUI = new UserInterfaceTelephone(connection);
      
-      connection.attach(observerConsole);
-      connection.attach(observerUI);
+      connection.attachObserver(observerConsole);
+      connection.attachObserver(observerUI);
        
-      ((ConsoleTelephone) observerConsole).run(connection);
+      ((ConsoleTelephone) observerConsole).runConnection(connection);
        
    }
 
