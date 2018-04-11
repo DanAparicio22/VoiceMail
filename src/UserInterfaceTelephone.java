@@ -45,13 +45,15 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 	private JButton buttonOfNumber8;
 	private JButton buttonOfNumber9;
 	private JTextArea messageInputTextArea;
+	private UserInterfaceTelephoneService telephoneService;
  
 	public UserInterfaceTelephone(Connection connection) {
-		initialize(connection);
+		initialize();
 		this.setVisible(true);
+		telephoneService = new UserInterfaceTelephoneService(connection);
 	}
  
-	private void initialize(Connection connection) {
+	private void initialize() {
 		generateContentPane();
 		generateNumberButtonsForContentPane();
 		generateHangUpButtonForContentPane();
@@ -61,9 +63,9 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 		generateMessageTextAreaForContentPane();
 		generateLabelMessageInputForContentPane();
 		generateLabelAnswerForContentPane();
-		giveActionToNumberButtons(connection);
-		giveActionToHangUpButton(connection);
-		giveActionToConfirmButton(connection);
+		giveActionToNumberButtons();
+		giveActionToHangUpButton();
+		giveActionToConfirmButton();
 		giveActionToQuitButton();
 	}
 
@@ -112,66 +114,66 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 		});
 	}
 
-	private void giveActionToConfirmButton(Connection connection) {
+	private void giveActionToConfirmButton() {
 		buttonConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 processInput(connection,KEY_CONFIRM);
+				 processInput(KEY_CONFIRM);
 			}
 		});
 	}
 
-	private void giveActionToHangUpButton(Connection connection) {
+	private void giveActionToHangUpButton() {
 		buttonHangUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
-				processInput(connection,KEY_HANG_UP);
+				processInput(KEY_HANG_UP);
 			}
 		});
 	}
 
-	private void giveActionToNumberButtons(Connection connection) {
+	private void giveActionToNumberButtons() {
 		buttonOfNumber1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
-				processInput(connection,KEY_ONE);
+				processInput(KEY_ONE);
 			}
 		});  
 		buttonOfNumber2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_TWO);
+				processInput(KEY_TWO);
 			}
 		});  
 		buttonOfNumber3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_THREE);
+				processInput(KEY_THREE);
 			}
 		});  
 		buttonOfNumber4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_FOUR);
+				processInput(KEY_FOUR);
 			}
 		});  
 		buttonOfNumber5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_FIVE);
+				processInput(KEY_FIVE);
 			}
 		});  
 		buttonOfNumber6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_SIX);
+				processInput(KEY_SIX);
 			}
 		});  
 		buttonOfNumber7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_SEVEN);
+				processInput(KEY_SEVEN);
 			}
 		});  
 		buttonOfNumber8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				processInput(connection,KEY_EIGHT);
+				processInput(KEY_EIGHT);
 			}
 		});  
 		buttonOfNumber9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 processInput(connection,KEY_NINE);
+				 processInput(KEY_NINE);
 				
 			}
 		});
@@ -261,18 +263,18 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 		this.answerMessageTextArea.setText(message);
 	}
 	
-	public void processInput(Connection connection,String input) {  
+	public void processInput(String input) {  
 		if(isNotEmptyMessageInput()) {
-			connection.recordMessage(getMessageInput());
+			telephoneService.recordMessage(getMessageInput());
 		}
 		if(isHangUp(input)) {
-			connection.hangUp();
+			telephoneService.hangUp();
 		} else {
 			if (isQuittingOfConnection(input)) {
 				quittingConnection();
 			} else {
 				if(isDial(input)) {
-					connection.dial(input);
+					telephoneService.dial(input);
 				}
 			}
 		}
@@ -291,7 +293,6 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 		messageInputTextArea.setText(newMessageInput);
 	}
 
-
 	private boolean isDial(String key) {
 		return key.length() == LENGTH_ONE && getCoincidencesInput(key) >= ZERO_COINCIDENCES;
 	}
@@ -302,8 +303,8 @@ public class UserInterfaceTelephone extends JFrame implements Telephone{
 
 	private void quittingConnection() {
 		this.setVisible(false);  
-		 this.dispose();
-		 System.exit(0);
+		this.dispose();
+		System.exit(0);
 	}
 
 	private boolean isQuittingOfConnection(String key) {
