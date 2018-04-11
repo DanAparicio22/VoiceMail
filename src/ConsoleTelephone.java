@@ -14,8 +14,7 @@ public class ConsoleTelephone implements Telephone {
    public void speak(String output) {
       System.out.println(output);
    } 
-   
-   	@Override
+
     public void runConnection() {
       boolean activeConnection = true;
       while (activeConnection) {

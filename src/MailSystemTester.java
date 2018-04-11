@@ -14,7 +14,7 @@ public class MailSystemTester {
       Telephone observerUI = new UserInterfaceTelephone(telephoneService);
       connection.attachObserver(observerConsole);
       connection.attachObserver(observerUI);
-      connection.runApplications();
+      ((ConsoleTelephone)observerConsole).runConnection();
    }
 
 }

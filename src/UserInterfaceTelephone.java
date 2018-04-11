@@ -46,7 +46,7 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
  
 	public UserInterfaceTelephone(TelephoneService telephoneService) {
 		this.telephoneService = telephoneService;
-		runConnection();
+		runApplication();
 	}
  
 	private void initialize() {
@@ -65,8 +65,7 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 		giveActionToQuitButton();
 	}
 	
-	@Override
-	public void runConnection() {
+	public void runApplication() {
 		initialize();
 		this.setVisible(true);
 	}
