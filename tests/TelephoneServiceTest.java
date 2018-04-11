@@ -2,16 +2,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class UserInterfaceTelephoneServiceTest {
+public class TelephoneServiceTest {
 
 	Connection mockedConnection;
-	UserInterfaceTelephoneService telephoneService;
+	TelephoneService telephoneService;
 	
 	@Before
 	public void init() {
 		mockedConnection = mock(Connection.class);
-		telephoneService = new UserInterfaceTelephoneService(mockedConnection);
+		telephoneService = new TelephoneService(mockedConnection);
 	}
 	
 	@Test
@@ -48,6 +49,12 @@ public class UserInterfaceTelephoneServiceTest {
 	public void shouldVerifyIfProcessInputWhenhangUp() {
 		telephoneService.processInput("H");
 		verify(mockedConnection).hangUp();
+	}
+	
+	@Test
+	public void shouldVerifyIfProcessInputWhenQuitApplication() {
+		telephoneService.processInput("Q");
+		verify(mockedConnection).quit();
 	}
 
 }

@@ -9,13 +9,12 @@ public class MailSystemTester {
       MailSystem system = new MailSystem(MAILBOX_COUNT);      
       Scanner console = new Scanner(System.in);  
       Connection connection = new Connection(system);
-      Telephone observerConsole = new ConsoleTelephone(console);
-      UserInterfaceTelephoneService telephoneService = new UserInterfaceTelephoneService(connection);
+      TelephoneService telephoneService = new TelephoneService(connection);
+      Telephone observerConsole = new ConsoleTelephone(console, telephoneService);
       Telephone observerUI = new UserInterfaceTelephone(telephoneService);
       connection.attachObserver(observerConsole);
       connection.attachObserver(observerUI);
-      ((ConsoleTelephone) observerConsole).runConnection(connection);
-       
+      ((ConsoleTelephone) observerConsole).runConnection();
    }
 
 }

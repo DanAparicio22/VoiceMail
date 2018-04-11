@@ -86,6 +86,10 @@ public class Connection {
       }
       resetConnection();
    }
+   
+   public void quit() {
+	   System.exit(0);
+   }
  
    private void resetConnection() {
       currentRecording = EMPTY_KEYS;

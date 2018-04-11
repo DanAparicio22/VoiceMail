@@ -42,9 +42,9 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 	private JButton buttonOfNumber8;
 	private JButton buttonOfNumber9;
 	private JTextArea messageInputTextArea;
-	private UserInterfaceTelephoneService telephoneService;
+	private TelephoneService telephoneService;
  
-	public UserInterfaceTelephone(UserInterfaceTelephoneService telephoneService) {
+	public UserInterfaceTelephone(TelephoneService telephoneService) {
 		initialize();
 		this.setVisible(true);
 		this.telephoneService = telephoneService;
@@ -261,14 +261,10 @@ public class UserInterfaceTelephone extends JFrame implements Telephone {
 	}
 	
 	public void processInput(String input) {
-		if (isQuittingOfConnection(input)) {
-			quittingConnection();
-		} else {
-			if(isNotEmptyMessageInput()) {
-				telephoneService.processInput(getMessageInput());
-			}
-			telephoneService.processInput(input);
+		if(isNotEmptyMessageInput()) {
+			telephoneService.processInput(getMessageInput());
 		}
+		telephoneService.processInput(input);
 		setMessageInput(EMPTY_INPUT);
 	}
 	
